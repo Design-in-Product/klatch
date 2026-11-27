@@ -1004,7 +1004,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-26 13:17–13:34:21 PT, both ends read from `date` (**WORK fire — substantive:
+- **Updated:** 2026-11-26 17:17:07–17:27:07 PT, both ends read from `date` (**STOP fire — substantive,
+  BUT A SOURCE READ AND NOT A DRIVE, AND THE RECORD IS FILED AS `READ.md` FOR THAT REASON: THESEUS'S
+  `unit-524` §5 RESIDUAL IS ANSWERED — THE FIXTURE/LIVE PARTITION OVER MY INDIRECT `hazard 4` AND
+  `ceiling 6` IS 10 LIVE / 0 FIXTURE, AND THE BLOCKER HE NAMED FOR IT WAS DISSOLVED RATHER THAN
+  CLEARED BECAUSE MY OWN `unit-523` CAPTURES ALREADY PRINT EVERY ONE OF THE TEN MEMBERS' WHOLE LINE
+  AND ORIGIN LINES.** `docs/research/unit-525fixturepartition-2026-11-26/READ.md`, opened **17:20:47
+  PST** at `defda67c`; record `0f1980f7`, memo `5d16e1d4`, both pushed to `main` as
+  `defda67c..5d16e1d4` before any bookkeeping. **NO pre-registration, NO arm, NO known positive, NO
+  captures, NO graded predictions** — it reads committed artefacts and live tracked files, and §0
+  forbids citing it as a census, including by me. The classification step is a **declared judgement
+  applied to ten named members** with each member's evidence quoted, not a keyed measurement; §5
+  states the cost in terms — *a read cannot be wrong the way a pre-registered arm can be wrong, only
+  quietly.* **(1) Theseus's closure of my `6 of 60` verified at the MEMBER level rather than
+  adopted:** the file holds **ten** `new Set(` occurrences (`grep -on` → `37,39,47,47,48,48,49,49,54,
+  119`), **four are removed by one mechanism** — `arm-setsizefalsegreen.mjs:72` passes `true` to
+  `stripSource`, which blanks **string bodies**, so the two string *keys* whose comparisons sit inside
+  the quotes and the `NEEDLE` literal all vanish, and `119` has no `.size` tail — and the remaining
+  six split **5 `INVARIANCE` + 1 `OTHER-N`** against `unit-521`'s own frozen table at `:56`, his
+  `+5`/`+1` exactly. **`INVARIANCE` 11 → 16 confirmed without re-driving; my published `11 + 4 = 15`
+  stands.** **(2) AGAINST ME, STRUCK NOT NARROWED: my own boarding sentence "one of the two readings
+  is wrong by 6 and `unit-521`'s is the one the floor-of-11 rests on" had a FALSE PREMISE.** Neither
+  reading is wrong by anything; the measured quantity was population growth, and the leg that let me
+  assert a disagreement is the `PH5` self-inclusion check already recorded against me this morning.
+  **(3) AGAINST ME AGAIN, and it is the keeper: I wrote down a blocker without checking whether my own
+  capture already held the answer.** *A capture written to name members is an answer key for the next
+  question about those members, and the seat that wrote it is the one most likely to forget that.*
+  **(4) The partition, criterion written down before the members were classified:** FIXTURE if the
+  compared values are literals in the same file exhibiting the `.size` comparison itself, LIVE if they
+  derive from a subject outside it and the comparison decides something else — **10 LIVE, 0 FIXTURE**,
+  every receiver filled from parsed source, a filesystem walk, recorded rows, or a product call. So
+  the fixture contamination is confined to the **direct** form (5 of 16) and `unit-523`'s `hazard 4` /
+  `ceiling 10` are **unaffected** by the item-10 choice. **Two members priced at nothing but worth
+  naming:** `scripts/verify-appetite-readings.mjs:174` is the only one in **standing tooling** and is
+  `BLIND`; `scripts/probe-round207…:410` is the only one whose compared values come from a **product
+  call** (`resolveImportEntity(…).entityId`). Whether either reaches the blank-receiver state is a
+  **runtime** question the source cannot answer — blocker unchanged. **(5) FOR xian'S ITEM 10, A
+  NEGATIVE FINDING (§4): no syntactic reader can make the fixture/live split** —
+  `new Set(EMPTY).size === 1` and `new Set(q.counts…map(kindOf)).size === 1` are the same shape, and
+  the receiver-population heuristic narrows without deciding (one of the ten is populated from a
+  literal parameter space and is still live). The choice has two implementable forms, by **declaration**
+  or by **corpus boundary**, and **option 2 is not the cheap version of option 1: on these ten it
+  discards SIX live claims to remove ZERO fixtures.** Not a recommendation; xian's choice stays his,
+  and what is new for the board is that the cheap option now has a measured price on a named
+  population. **Mail:** both inbound memos read in full before any work — Theseus's `unit-524` (closes
+  my `6 of 60`, nothing owed back, one residual left to this seat by name) and Calliope's item-10
+  boarding note. One memo filed and pushed to `main` in its own commit per the worktree mail rule.
+  Neither inbound moved to `read/`: `unit-524` is the thread I am replying to and closing a thread
+  Theseus opened is his call, not mine. **Gate:** ran clean on both commits — `tracked files read`
+  **1123**, population **65**, **4/3/58**, baseline **58**, all unmoved; this fire wrote one markdown
+  record and no reader. **Drain:** the one item the checklist surfaced was taken and closed in-fire;
+  the boarded `6 of 60` ticked with its verification trail. **Deferred with named blockers:**
+  `new Set<T>(` in the binding reader is the **next unit** and its three sites are members #8/#9/#10
+  of the ten above — blocker for doing it *here*, it needs its own pre-registration and pinned
+  population, because editing the reader after `unit-523`'s drive republishes `unit-523`'s census and
+  frozen research files are not to be edited (settled 11/20); the `EMPTY-READS-INVARIANT` + `continue`
+  reachability question stays blocked on a runtime answer the source cannot give; item 10 is **xian's
+  and only his**. Nothing else unblocked was reachable. Log:
+  `docs/logs/2026-11-26-daedalus-log.md`.)
+- **Previous:** 2026-11-26 13:17–13:34:21 PT, both ends read from `date` (**WORK fire — substantive:
   `unit-521`'s TWO RESIDUAL BOUNDS ARE CLOSED BY DRIVE. THE `INDIRECT` 123 IS KEYED BY RECEIVER AND
   THE HAZARD IN IT IS 4, SO THE PUBLISHED FLOOR OF 11 IS 15 WITH A CEILING OF 10 AND `GUARDED` IS 0
   ACROSS BOTH SYNTACTIC FORMS; THE `NO-COMPARISON` 97 HOLDS ZERO INSTANCES.**

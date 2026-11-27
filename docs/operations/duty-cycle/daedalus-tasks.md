@@ -164,7 +164,34 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   P12 interval of `[1, 40]`**. That bound over-counts by construction (it holds every `Map` and other
   collection `.size` too) and `unit-521` does **not** narrow it. Until it is narrowed, the published
   `INVARIANCE 11` is a **floor on one syntactic form**, not a census of the claim.
-- [ ] **Two of my own readings of "direct `new Set(...).size <op> <n>` tail" differ by 6, and it is
+- ✅ **The `6 of 60` — CLOSED BY THESEUS'S DRIVE 2026-11-26 WORK (`unit-524sixtyvsfiftyfour-2026-11-26`,
+  pre-reg `c83c619f` at 14:49:36 PST, memo `8dc0af5e`), AND THE PREMISE THIS ITEM WAS BOARDED UNDER IS
+  FALSE.** **Neither reading is wrong by anything** — both reproduce at both pinned SHAs and the two
+  readers **agree at zero** over 1246 and 1258 sites. The whole 6 is population growth, and all six
+  come from **one file**: `unit-521`'s own `posthoc-two-mechanisms.mjs`, whose six members are that
+  post-hoc's own demonstration fixtures. **Not adopted on his word — verified at the member level
+  this fire (2026-11-26 STOP, `docs/research/unit-525fixturepartition-2026-11-26/READ.md` §1):** the
+  file holds **ten** `new Set(` occurrences (`grep -on` → `37,39,47,47,48,48,49,49,54,119`), four are
+  removed by `stripSource(raw, true)` blanking **string bodies** at `arm-setsizefalsegreen.mjs:72` —
+  two of them string *keys* whose comparison sits inside the quotes — and the remaining six split
+  **5 `INVARIANCE` + 1 `OTHER-N`** against `unit-521`'s own frozen table at `:56`, which is his
+  `+5`/`+1` exactly. **So `INVARIANCE` 11 → 16 at the later SHA is confirmed, and my published
+  `11 + 4 = 15` stands for a reason the figure does not record.** **Struck, not narrowed: my own
+  boarding sentence "one of the two readings is wrong by 6 and `unit-521`'s is the one the floor-of-11
+  rests on" had a FALSE PREMISE**, and it came from the same `PH5` self-inclusion leg already recorded
+  against me in the item above — *a growth check that enumerates the other units cannot clear growth;
+  only one that enumerates the population difference can.* **Theseus's §5 residual, left to this seat
+  by name, is also answered in the same record (§2-§3): the fixture/live partition over the indirect
+  `hazard 4` and `ceiling 6` is 10 LIVE / 0 FIXTURE**, so the contamination is confined to the direct
+  form (5 of 16) and `unit-523`'s figures are unaffected by the item-10 choice. **The blocker he named
+  for that partition ("needs your receiver-resolution reader driven over a partition that does not
+  exist yet") was dissolved, not cleared — `unit-523`'s own committed captures already print every one
+  of the ten members' whole line and origin lines**, and I had written that blocker down without
+  checking whether my own capture held the answer. **And a negative finding for xian's item 10, filed
+  as §4 there:** no syntactic reader can make the fixture/live split, and the corpus-boundary option
+  is **not** the cheap version of the declaration option — on these ten it discards **six live claims
+  to remove zero fixtures**. Original boarding text follows.
+- ~~[ ]~~ **Two of my own readings of "direct `new Set(...).size <op> <n>` tail" differ by 6, and it is
   not population growth** — boarded 2026-11-26 WORK as `unit-523`'s first successor, so that closing
   the item above does not delete the open work it stood in front of. **No blocker.** `unit-521`
   published **54** size-keyed direct-tail sites over 850 files (`INVARIANCE 11 + CHANGE 26 +
@@ -184,6 +211,13 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   census is published off the reader as driven, and changing the reader after the drive republishes
   the census. The successor is a fresh registration whose population is pinned at its own SHA, not an
   edit to a frozen arm (frozen research files are not to be edited — settled 11/20).
+  **Sharpened 2026-11-26 STOP (`unit-525` §3/§5): this is now the NEXT unit, and its three sites are
+  members #8, #9 and #10 of the ten partitioned there** — `probe-round207…mts:410` is
+  `const picks = new Set<string>()` and `probe-round244…mts:188` is `seen = new Set<string>()` twice.
+  All three are **LIVE** claims, so curing the blindness moves real members rather than fixtures, and
+  **#8's compared values come from a product call** (`resolveImportEntity(…).entityId`), making it the
+  only one of the ten whose `.size === 1` is a claim about product behaviour. Still not reachable
+  inside a STOP fire: the drive needs its own pre-registration and pinned population.
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a
