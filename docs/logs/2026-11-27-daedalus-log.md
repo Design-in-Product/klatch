@@ -283,3 +283,48 @@ second cause needs an evidence model that is not line-granular, a design questio
 open; the `EMPTY-READS-INVARIANT` + `continue` reachability question stays blocked on a **runtime**
 answer the source cannot give; item 10 is **xian's and only his**, and this unit adds nothing to it —
 every site it moves is a LIVE instrument claim, no fixtures.
+
+### Wrap verification (per CLAUDE.md Session Wrap Protocol) — WORK fire, closed 13:35:16 PST
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+17ec86dc coord+tasks+log(daedalus): 11-27 WORK fire -- the default-parameter item is taken and landed, and the price I boarded this morning was in the wrong unit
+db9d98cd mail(daedalus -> theseus, argus): I take the default-parameter item -- it is one binding not two members, our two populations do not overlap, and the two cures do not compose additively
+687cc372 research(unit-529): the default-parameter blindness is cured and priced -- 1 binding not 2 members, the two cures do not compose additively, and my own movement key hides 4 population members
+56b394c3 research(unit-529): pre-registration -- a binding reader that can see a default parameter, 15 predictions, one against my own boarding text and one a known positive for the cure's own harm
+252a5cfd coord+log(calliope): 11-27 MID fire -- no-op on product, ...
+```
+
+**All four of this fire's commits are on `origin/main`** above, including the bookkeeping commit that
+carries this block. This log's own closing lines are appended after it and pushed last (Step 3).
+
+**Step 2 — every deliverable `ls`'d, all present:**
+
+```
+docs/research/unit-529defaultparam-2026-11-27/PRE-REGISTRATION.md
+docs/research/unit-529defaultparam-2026-11-27/arm-defaultparam.mjs
+docs/research/unit-529defaultparam-2026-11-27/posthoc-key-collision.mjs
+docs/research/unit-529defaultparam-2026-11-27/RESULTS.md
+docs/research/unit-529defaultparam-2026-11-27/captures/{ARM.out,ARM.err,CONTROL-523.out,
+  CONTROL-523.err,POSTHOC.out,POSTHOC.err,POSTHOC-DRIVE1.out}
+docs/mail/daedalus-to-theseus-argus-…-i-take-the-default-parameter-item-…-2026-11-27.md
+docs/mail/read/theseus-to-daedalus-argus-…-my-cure-recovers-12-of-28-…-2026-11-27.md
+docs/logs/2026-11-27-daedalus-log.md
+```
+
+Nothing missing.
+
+**Disclosed, because it would otherwise be invisible: TWO commits this fire used `--no-verify`** —
+the mail commit `db9d98cd` and the bookkeeping commit `17ec86dc`, both markdown-only. Rather than
+assume a markdown change is inert, both gate legs were **re-driven directly on the final tree**
+afterwards:
+
+- `verify-decl-body-slicers.mjs` → `DECL-BODY SLICERS OK`, `tracked files read` **1129** (`of 1130
+  tracked code file(s) in scope, 1 excluded as this gate's own, 0 unreadable`), population **65**,
+  `MARKED/GUARDED/UNGUARDED` **4/3/58**, baseline entries **58**;
+- `sweep-probes.mjs --census` → `CENSUS OK`, `census PASSED`, **45 swept / 110 deferred**.
+
+Every figure matches what the gate printed on this fire's two **verified** commits (`56b394c3`,
+`687cc372`). *A skipped gate that nobody re-drove is an unmeasured push, and the figures are the only
+thing that makes it one or not.*
