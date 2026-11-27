@@ -1,0 +1,177 @@
+unit-527setgeneric — arm
+SHA d20bb6efc6f0 · clock 2026-11-27 09:27:08 PST
+frozen subject: docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs
+frozen sha256[0:12]: 35e449901131  (clean against HEAD)
+instrument corpus: 858 files   (CODE_EXT sliced: /\.(mjs|mts|js|ts|cjs)$/)
+sliced region: 7893 B   cured region: 8103 B
+NEEDLE as instantiated: "new Set("
+
+─── the four substitutions, printed whole ──────────────────────────────────────
+  S1  setTailIndices: needle loop -> generic-tolerant locator loop
+    FROM: "  let i = 0;\n  while ((i = code.indexOf(NEEDLE, i)) !== -1) {\n    const open = i + NEEDLE.length - 1;"
+    TO:   "  const LOC = new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\", 'g');\n  let i = 0;\n  let _m;\n  while ((LOC.lastIndex = i), (_m = LOC.exec(code)) !== null) {\n    i = _m.index;\n    const open = _m.index + _m[0].length - 1;"
+  S2  keyIndirect: isDirectSetTail regex admits a type argument list
+    FROM: "const isDirectSetTail = /^new\\s+Set\\s*\\([\\s\\S]*\\)$/.test(t);"
+    TO:   "const isDirectSetTail = /^new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\([\\s\\S]*\\)$/.test(t);"
+  S3  keyIndirect: SET-EXPR receiver test
+    FROM: "rec.sawParen && t.includes(NEEDLE)"
+    TO:   "rec.sawParen && new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\").test(t)"
+  S4  keyIndirect: SET-BOUND binding test
+    FROM: "b.rhs.includes(NEEDLE)"
+    TO:   "new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\").test(b.rhs)"
+  residual `NEEDLE` identifier occurrences left in the cured text: 2
+    (S1 keeps NEEDLE.length only on the non-match advance path, which the regex loop
+     never reaches; S2/S3/S4 removed every KEYING use. Reported, not asserted at 0.)
+
+─── KP / KN cells (both instantiations, every cell) ────────────────────────────
+  PASS  K1  plain bound Set, invariance — unchanged by the cure
+        want pub=SET-BOUND/INVARIANCE/BLIND cur=SET-BOUND/INVARIANCE/BLIND
+        got  pub=SET-BOUND/INVARIANCE/BLIND cur=SET-BOUND/INVARIANCE/BLIND
+  PASS  K2  THE CURE'S KNOWN POSITIVE: generic bound Set
+        want pub=OTHER-BOUND/INVARIANCE cur=SET-BOUND/INVARIANCE/BLIND
+        got  pub=OTHER-BOUND/INVARIANCE cur=SET-BOUND/INVARIANCE/BLIND
+  PASS  K3  no file-local binding — UNRESOLVED under both
+        want pub=UNRESOLVED/INVARIANCE cur=UNRESOLVED/INVARIANCE
+        got  pub=UNRESOLVED/INVARIANCE cur=UNRESOLVED/INVARIANCE
+  PASS  K4  KN for P7: a DEFAULT PARAMETER is not a declaration, so the cure does NOT reach it
+        want pub=UNRESOLVED/INVARIANCE cur=UNRESOLVED/INVARIANCE
+        got  pub=UNRESOLVED/INVARIANCE cur=UNRESOLVED/INVARIANCE
+  PASS  K5  plain bound Map — MAP-BOUND under both
+        want pub=MAP-BOUND/INVARIANCE cur=MAP-BOUND/INVARIANCE
+        got  pub=MAP-BOUND/INVARIANCE cur=MAP-BOUND/INVARIANCE
+  PASS  K6  KN for L1: a GENERIC Map stays uncured, and the price is OTHER-BOUND under both
+        want pub=OTHER-BOUND/INVARIANCE cur=OTHER-BOUND/INVARIANCE
+        got  pub=OTHER-BOUND/INVARIANCE cur=OTHER-BOUND/INVARIANCE
+  PASS  K7  plain DIRECT tail — excluded from the population under both
+        want pub=EXCLUDED cur=EXCLUDED
+        got  pub=EXCLUDED cur=EXCLUDED
+  PASS  K8  P14': a GENERIC direct tail is CALL under PUBLISHED and EXCLUDED under CURED
+        want pub=CALL/INVARIANCE cur=EXCLUDED
+        got  pub=CALL/INVARIANCE cur=EXCLUDED
+  PASS  K9  KN for L2: a NESTED generic is missed by the cure's own locator
+        want pub=OTHER-BOUND/INVARIANCE cur=OTHER-BOUND/INVARIANCE
+        got  pub=OTHER-BOUND/INVARIANCE cur=OTHER-BOUND/INVARIANCE
+  PASS  K10 S3: a parenthesised generic expression receiver — CALL -> SET-EXPR
+        want pub=CALL/INVARIANCE cur=SET-EXPR/INVARIANCE/BLIND
+        got  pub=CALL/INVARIANCE cur=SET-EXPR/INVARIANCE/BLIND
+  PASS  K11 regression guard: a parenthesised PLAIN expression receiver is SET-EXPR under both
+        want pub=SET-EXPR/INVARIANCE/BLIND cur=SET-EXPR/INVARIANCE/BLIND
+        got  pub=SET-EXPR/INVARIANCE/BLIND cur=SET-EXPR/INVARIANCE/BLIND
+  PASS  K12 the guard arm survives the cure: a generic bound Set with a null guard is GUARDED
+        want pub=OTHER-BOUND/INVARIANCE cur=SET-BOUND/INVARIANCE/GUARDED
+        got  pub=OTHER-BOUND/INVARIANCE cur=SET-BOUND/INVARIANCE/GUARDED
+  PASS  K13 direction is untouched: a generic bound Set compared for CHANGE
+        want pub=OTHER-BOUND/CHANGE cur=SET-BOUND/CHANGE/BLIND
+        got  pub=OTHER-BOUND/CHANGE cur=SET-BOUND/CHANGE/BLIND
+  KP 13 of 13
+
+─── control: the frozen arm, driven unchanged at this SHA ──────────────────────
+  PASS  C0  the frozen arm drove without error rc 0
+  PASS  C1  population equal         frozen=126 slice=126
+  PASS  C2  excludedDirectTails equal frozen=60 slice=60
+  PASS  C3.SET-BOUND                 frozen=36 slice=36
+  PASS  C3.SET-EXPR                  frozen=0 slice=0
+  PASS  C3.MAP-BOUND                 frozen=10 slice=10
+  PASS  C3.MAP-EXPR                  frozen=0 slice=0
+  PASS  C3.OTHER-BOUND               frozen=34 slice=34
+  PASS  C3.UNRESOLVED                frozen=7 slice=7
+  PASS  C3.PROPERTY                  frozen=11 slice=11
+  PASS  C3.CALL                      frozen=21 slice=21
+  PASS  C3.RECEIVER-UNKEYED          frozen=7 slice=7
+  PASS  C3.SET-TAIL-DIRECT           frozen=0 slice=0
+  PASS  C4  narrowed hazard equal    frozen=4 slice=4
+  CONTROL 14 of 14
+
+─── Arm A: reach of the `new Set(` string literal ──────────────────────────────
+  new Set, PLAIN      1268
+  new Set, GENERIC    71      <- invisible to the published needle
+  new Map, PLAIN      403
+  new Map, GENERIC    88      <- L1, uncured here
+  files carrying a GENERIC Set: 37
+  GENERIC Set sites whose paren span is balanced: 71
+  GENERIC Set sites whose tail is `.size`:        0
+  GENERIC Set sites that are DIRECT `.size <op> <n>` tails: 0
+
+  every GENERIC Set site whose tail is `.size` (whole line):
+
+  type-argument forms seen on GENERIC Set sites:
+    <string>                     53
+    <net.Socket>                 7
+    <number>                     5
+    <Hazard>                     4
+    <FlagKey>                    1
+    <ChildProcess>               1
+
+─── Arm B: the differential, PUBLISHED vs CURED ────────────────────────────────
+  excludedDirectTails   PUBLISHED 60   CURED 60   delta 0
+  INDIRECT population   PUBLISHED 126   CURED 126   delta 0
+
+  class                PUBLISHED  CURED      delta
+  SET-BOUND            36         40         +4
+  SET-EXPR             0          0          0
+  MAP-BOUND            10         10         0
+  MAP-EXPR             0          0          0
+  OTHER-BOUND          34         30         -4
+  UNRESOLVED           7          7          0
+  PROPERTY             11         11         0
+  CALL                 21         21         0
+  RECEIVER-UNKEYED     7          7          0
+  SET-TAIL-DIRECT      0          0          0
+  (both sums asserted == their populations: 126, 126)
+
+  NARROWED HAZARD (SET-BOUND or SET-EXPR) and INVARIANCE:  PUBLISHED 4   CURED 5
+    PUBLISHED guard: {"BLIND":4}
+    CURED     guard: {"BLIND":5}
+
+  sites that LEFT the population under CURED: 0
+  sites that ENTERED the population under CURED: 0
+
+  sites whose CLASS or GUARD moved: 4
+    docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:187  OTHER-BOUND/OTHER-N  ->  SET-BOUND/OTHER-N/BLIND
+      receiver=baselineKeys  bindLine 181 -> 181
+      ck('A4a', `baseline set rebuilt from ${BASELINE_REV.slice(0, 8)} with the sliced reader: ${baselineKeys.size} keys (shipped F1 says 9 grandfathered)`, baselineKeys.size === 9);
+    scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410  OTHER-BOUND/INVARIANCE  ->  SET-BOUND/INVARIANCE/BLIND
+      receiver=picks  bindLine 406 -> 406
+      check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+    scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:905  OTHER-BOUND/EMPTY  ->  SET-BOUND/EMPTY/BLIND
+      receiver=providers  bindLine 903 -> 903
+        if (providers.size === 0) return own;
+    scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:319  OTHER-BOUND/EMPTY  ->  SET-BOUND/EMPTY/BLIND
+      receiver=providers  bindLine 315 -> 315
+        if (providers.size === 0) return own;
+
+  movement, as a from -> to tally:
+    OTHER-BOUND -> SET-BOUND             4
+
+─── Arm C: the three named ceiling members ─────────────────────────────────────
+  rows found in the PUBLISHED population matching the two named paths: 3
+    scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410
+      PUBLISHED  OTHER-BOUND/INVARIANCE  receiver=picks  bindLine=406
+      CURED      SET-BOUND/INVARIANCE/BLIND  receiver=picks  bindLine=406
+      check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+      PUBLISHED  UNRESOLVED/INVARIANCE  receiver=seen  bindLine=null
+      CURED      UNRESOLVED/INVARIANCE  receiver=seen  bindLine=null
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+      PUBLISHED  UNRESOLVED/INVARIANCE  receiver=seen  bindLine=null
+      CURED      UNRESOLVED/INVARIANCE  receiver=seen  bindLine=null
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+
+  for completeness, every UNRESOLVED row under PUBLISHED (whole line):
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:291  CURED=UNRESOLVED
+      const p4 = wPre.size === 2 && wPre.has('LANDS') && wPre.has('REFUTED')
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:292  CURED=UNRESOLVED
+        && wPost.size === 1 && wPost.has('LANDS')
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  CURED=UNRESOLVED
+      const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  CURED=UNRESOLVED
+      const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+    docs/research/unit-503stalelabelwidth-2026-11-22/derive-stale-entry-cost.mjs:75  CURED=UNRESOLVED
+        Object.entries(byLabel).map(([k, s]) => [k, s.size === 1 ? [...s][0] : [...s]]),
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  CURED=UNRESOLVED
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  CURED=UNRESOLVED
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+
+VERDICT: GRADED  ·  KP 13/13  ·  CONTROL 14/14
