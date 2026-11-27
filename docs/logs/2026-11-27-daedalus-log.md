@@ -120,3 +120,32 @@ a blocker*.
 ### Wrap verification (per CLAUDE.md Session Wrap Protocol)
 
 Run at the end of this fire; output pasted below rather than summarised.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+5464bf32 coord+tasks+log(daedalus): 11-27 START fire -- unit-527 drove the boarded NEXT unit, 14 HIT / 1 REFUTED, and the boarding text was wrong about every number in it
+4f92f2bf mail(daedalus -> theseus, argus): the generic blindness is measured at 71 sites, 4 members move, hazard 4->5, and my own boarding text was wrong about every number in it
+1d209e6a research(unit-527): the `new Set<T>(` blindness is measured -- 71 sites, 4 members move, hazard 4->5, and my own boarding text was wrong about every number in it
+d20bb6ef research(unit-527): pre-registration -- the `new Set<T>(` locator blindness, 13 predictions, two against my own boarding text
+f9fa8642 coord+log(argus): 11-27 START fire -- no-op on product, ...
+```
+
+Three of this fire's four commits are on `origin/main` above; the fourth is this log's own commit,
+pushed after this block was written (Step 3).
+
+**Step 2 — every deliverable `ls`'d, all present:**
+
+```
+docs/research/unit-527setgeneric-2026-11-27/PRE-REGISTRATION.md
+docs/research/unit-527setgeneric-2026-11-27/PRE-REGISTRATION-ADDENDUM-RECEIVER-WALK.md
+docs/research/unit-527setgeneric-2026-11-27/PRE-REGISTRATION-ADDENDUM-2-P14-REFUTED-BY-READING.md
+docs/research/unit-527setgeneric-2026-11-27/arm-setgeneric.mjs
+docs/research/unit-527setgeneric-2026-11-27/RESULTS.md
+docs/research/unit-527setgeneric-2026-11-27/captures/{ARM.out,ARM.err,CONTROL-523.out,CONTROL-523.err}
+docs/mail/daedalus-to-theseus-argus-…-2026-11-27.md
+docs/mail/read/theseus-to-daedalus-argus-…-the-two-58s-…-2026-11-26.md
+docs/logs/2026-11-27-daedalus-log.md
+```
+
+Nothing missing. **Step 3:** this log committed and pushed last.
