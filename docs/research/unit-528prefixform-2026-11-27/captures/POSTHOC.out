@@ -1,0 +1,143 @@
+=== §1 SLICES — the cure out of THIS unit's own arm, the published key out of unit-522 ===
+
+  PREFIX_UNIT (out of the arm, not retyped): /\b(B|bytes|byte)\b(?:\s*[:=]\s*|\s+)(?:\$\{)?[A-Za-z0-9_$.\[\]'"`()?|&!\s+\-]{0,40}$/
+  UNIT_TAIL   (out of unit-522):             /^[}\s)\]'"`,.:;+\-=]{0,8}(B|bytes|byte)\b/
+  BUF_DECL    (out of the arm — UNGRADED THERE, graded in §4 here): /readFileSync\((?![^)]*utf8)|Buffer\.(?:from|alloc|concat)|\.subarray\(|\bBuffer\b/
+
+=== §3 THE 28 SITES, SPLIT BY MECHANISM — a fall-through bucket printed unconditionally ===
+
+
+  E/F DISCRIMINATOR GATE — the sub-key drive 1 published ungraded:
+
+    PASS  EF1  want GLUED        got GLUED         camelCase — the only truly glued shape in the 28
+    PASS  EF2  want GLUED        got GLUED         snake_case — glued by an underscore
+    PASS  EF3  want STANDS-ALONE got STANDS-ALONE  DRIVE 1 CALLED THIS GLUED. A bare token, refused for the subject class.
+    PASS  EF4  want STANDS-ALONE got STANDS-ALONE  drive 1 called this glued too
+    PASS  EF5  want STANDS-ALONE got STANDS-ALONE  and this; a bare token with no separator after it
+    PASS  EF6  want NO-TOKEN     got NO-TOKEN      no token at all
+
+    E/F discriminator: 6 of 6
+  HIT      PH0  the E/F discriminator passes its own gate — the gate drive 1 did not have
+           registered true   measured true
+  A-ALREADY-PUBLISHED             0
+      (empty — printed anyway, so an empty bucket is a measurement and not a silence)
+  B-CURED-ADDS-IT                12
+      docs/research/round419-instruments/drive-his-418.mjs:45  (2 .length occurrences on the line)   B-CURED-ADDS-IT
+        say(`exit: ${r.status}   stdout bytes: ${(r.stdout || '').length}   stderr bytes: ${(r.stderr || '').length}`);
+      docs/research/round420-instruments/drive-his-419.mjs:120  (2 .length occurrences on the line)   B-CURED-ADDS-IT
+        say(`exit: ${r.status}  stdout bytes: ${(r.stdout || '').length}  stderr bytes: ${(r.stderr || '').length}`);
+      docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71   B-CURED-ADDS-IT
+        `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+      docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95   B-CURED-ADDS-IT
+        `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+      docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:129   B-CURED-ADDS-IT
+        return { ok: same, detail: `bytes=${armSrc.length} identical=${same}` };
+      docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:169   B-CURED-ADDS-IT
+        detail: `exit=${run.status} · headline=${JSON.stringify(headline)} · stderr bytes=${(run.stderr || '').length}`,
+      docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:194  (2 .length occurrences on the line)   B-CURED-ADDS-IT
+        return { ok: live === blob, detail: `live bytes=${live.length} rev bytes=${blob.length} identical=${live === blob}` };
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:60  (2 .length occurrences on the line)   B-CURED-ADDS-IT
+        console.log(`green rc=${green.status} bytes=${green.stdout.length} lines=${g.length - 1}`);
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:61  (2 .length occurrences on the line)   B-CURED-ADDS-IT
+        console.log(`red   rc=${red.status} bytes=${red.stdout.length} lines=${r.length - 1}`);
+      docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs:94   B-CURED-ADDS-IT
+        say(`  span anchors found: ${spanFound}   bytes: ${span.length}`);
+      docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs:50   B-CURED-ADDS-IT
+        console.log(`git diff --stat HEAD -- packages/ scripts/  rc=${diff.status}  bytes=${diff.stdout.length}`);
+      docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs:57   B-CURED-ADDS-IT
+        console.log(`  bytes ${slice.length} (arm: ${EXPECT.bytes})  offsets ${si}..${closeAt + 3} (arm: ${EXPECT.from}..${EXPECT.to})`);
+  C-REGION-FILTER                 9
+      docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167   C-REGION-FILTER(IDENT-IN-CODE)
+        bytes: src.length,
+      docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs:107   C-REGION-FILTER(IDENT-IN-CODE)
+        rows.push({ arm, pre: drive(PRE, p), post: drive(SUBJECT, p), bytes: mutated.length });
+      docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:203   C-REGION-FILTER(IDENT-IN-CODE)
+        bytes: src.length,
+      docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:83  (2 .length occurrences on the line)   C-REGION-FILTER(IDENT-IN-CODE)
+        before: { source: 'captures/d4-clean-after-reset.out', bytes: before.length, lines: A.length, sha: sha(before) },
+      docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:84  (2 .length occurrences on the line)   C-REGION-FILTER(IDENT-IN-CODE)
+        after: { source: 'driven fresh in this post-hoc', bytes: after.length, lines: B.length, sha: sha(after) },
+      docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:21   C-REGION-FILTER(IDENT-IN-CODE)
+        bytes: buf.length,
+      docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:93   C-REGION-FILTER(IDENT-IN-CODE)
+        leg2.push({ cell, reader, same, baseSha: sha(base), gotSha: sha(got), bytes: got.length });
+      docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:164  (8 .length occurrences on the line)   C-REGION-FILTER(IDENT-IN-CODE)
+        p6 = { ran: true, occ, reversible, V: { rc: V.rc, bytes: V.stdout.length, sha: sha(V.stdout), stderr: V.stderr.length }, R: { rc: R.rc, bytes: R.stdout.length, sha: sha(R.stdout), stderr: R.
+      docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs:64   C-REGION-FILTER(IDENT-IN-CODE)
+        Object.entries(capBytes).map(([k, v]) => [k, { sha12: sha12(v), bytes: v.length }]),
+  D-BRACE-CUT                     0
+      (empty — printed anyway, so an empty bucket is a measurement and not a silence)
+  E-TOKEN-GLUED-TO-IDENTIFIER     2
+      docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:234  (2 .length occurrences on the line)   E-TOKEN-GLUED-TO-IDENTIFIER
+        console.log(`  M-child   exit=${child.status}  stderrBytes=${(child.stderr ?? '').length}  stdoutBytes=${childOut.length}`);
+      docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs:25   E-TOKEN-GLUED-TO-IDENTIFIER
+        `status=${r.status}\nsignal=${r.signal}\nerror=${r.error ? r.error.message : 'none'}\nstarted=${started}\nended=${ended}\nstdout_bytes=${(r.stdout ?? '').length}\n`,
+  F-SEPARATOR-OR-SUBJECT-CLASS    3
+      docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:242   F-SEPARATOR-OR-SUBJECT-CLASS
+        console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join(', ') : '(none)'}`);
+      docs/research/unit-490partitionformat-2026-11-20/arm-partitionformat.mjs:272   F-SEPARATOR-OR-SUBJECT-CLASS
+        console.log(`  IN-POPULATION (own bytes match inside a live partition row): ${inPop.length}`);
+      docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:61  (2 .length occurrences on the line)   F-SEPARATOR-OR-SUBJECT-CLASS
+        console.log(`  bytes attributable to the WIDENING: ${wide.stdout.length - narrow.stdout.length}`);
+  G-NO-TOKEN-IN-HEAD-AT-ALL       2
+      docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:157   G-NO-TOKEN-IN-HEAD-AT-ALL
+        `${mv('comments').padEnd(9)} ${mv('bytes').padEnd(15)} ${under.length ? under.join(' / ') : '(none)'}`);
+      scripts/measure-marker-floor.mjs:296  (2 .length occurrences on the line)   G-NO-TOKEN-IN-HEAD-AT-ALL
+        `(${((chars / bytes) * 100).toFixed(2)}%), from ${contributing.length} of ${accounting.length} files`);
+
+  partition check: 28 of 28 — EVERY site is in exactly one bucket
+  HIT      PH1  the 28 partition cleanly across the named mechanisms
+           registered true   measured true
+  HIT      PH2  the cure adds a MINORITY of the 28 — the single-mechanism story in the arm is wrong
+           registered true   measured true
+  HIT      PH3  the arm's single label `REFUSED by the cure` covered more than one mechanism
+           registered true   measured true
+
+=== §4 THE ARM'S OWN EVIDENCE DETECTOR, GRADED — P8 rested on this and it was never tested ===
+
+  PASS  BK1  want true  got true   readFileSync with NO encoding — a real Buffer
+        const before = readFileSync(join(CAP, 'd4-clean-after-reset.out'));
+  PASS  BK2  want true  got true   Buffer.from — a real Buffer
+        const b = Buffer.from(s, "utf8");
+  PASS  BN1  want false got false  readFileSync WITH 'utf8' and NO nested call — a string
+        const s = readFileSync(PATH, 'utf8');
+  FAIL  BN2  want false got true   readFileSync WITH 'utf8' BEHIND A NESTED CALL — a string, and this is the shape in the 28
+        const sliceText = readFileSync(join(REPO, SLICE), 'utf8');
+  PASS  BN3  want false got false  a plain string assignment
+        const t = other.slice(a, b);
+
+  BUF_DECL: 4 of 5
+  REFUTED  PH4  BUF_DECL passes its own KP/KN set — i.e. P8's figure of 3 may be used as stated
+           registered true   measured false
+
+  REPAIRED: /readFileSync\((?![\s\S]*?['"](?:utf-?8|ascii|latin1|hex|base64)['"])[^;]*\)|Buffer\.(?:from|alloc|concat)\(|encoding:\s*['"]buffer['"]/
+  PASS  BK1  want true  got true   (repaired)
+  PASS  BK2  want true  got true   (repaired)
+  PASS  BN1  want false got false  (repaired)
+  PASS  BN2  want false got false  (repaired)
+  PASS  BN3  want false got false  (repaired)
+  HIT      PH5  the REPAIRED detector passes all five
+           registered true   measured true
+
+  of the 28, buffer-shaped declaration elsewhere in the file:
+      under the ARM's detector:     3   docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71, docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95, docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:83
+      under the REPAIRED detector:  2   docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:61, docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:83
+  HIT      PH6  P8's claim survives the repair — at least one of the 28 is a Buffer declared on another line
+           registered true   measured true
+  HIT      PH7  the ARM's detector OVER-reported, so P8's supporting count was inflated
+           registered true   measured true
+
+=== §5 POST-HOC GRADING ===
+
+  HIT      PH0   the E/F discriminator passes its own gate — the gate drive 1 did not have
+  HIT      PH1   the 28 partition cleanly across the named mechanisms
+  HIT      PH2   the cure adds a MINORITY of the 28 — the single-mechanism story in the arm is wrong
+  HIT      PH3   the arm's single label `REFUSED by the cure` covered more than one mechanism
+  REFUTED  PH4   BUF_DECL passes its own KP/KN set — i.e. P8's figure of 3 may be used as stated
+  HIT      PH5   the REPAIRED detector passes all five
+  HIT      PH6   P8's claim survives the repair — at least one of the 28 is a Buffer declared on another line
+  HIT      PH7   the ARM's detector OVER-reported, so P8's supporting count was inflated
+
+  7 HIT / 1 REFUTED of 8
+
+  SELF: docs/research/unit-528prefixform-2026-11-27/posthoc-four-mechanisms.mjs
