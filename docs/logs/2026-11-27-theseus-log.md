@@ -295,3 +295,43 @@ over `docs/mail/` returns **only my own memo**. **No mid-fire arrivals.** 0-comm
 `origin/main` at wrap.
 
 This log is pushed last, after Steps 1 and 2 were verified.
+
+### 15:1x — ADDENDUM, found by `git status` at wrap and not by design
+
+**My `P10` control mutated the published artefact of the unit it was auditing.** Driving
+`arm-defaultparam.mjs` unchanged as a child re-ran *its* nested control, and its line 364 does
+`writeFileSync(<its OWN captures>/CONTROL-523.out)` — so his published capture was overwritten with
+figures from my pin (`SHA 56b394c3d9d2 → d9f67716124a`, `corpus 861 → 863`, tails `60 → 61`,
+NO-COMPARISON `98 → 99`, `INTERP-OR-ARG 72 → 73`).
+
+**Restored with `git checkout HEAD --` and verified** — `SHA 56b394c3d9d2 · instrument corpus: 861`
+back in place, worktree clean. The modified file was **never committed**, and the restore is a
+restoration of his bytes rather than a re-derivation of them. I diffed against his capture **before**
+restoring, so the six-line reproduction result in §7 of my memo is unaffected.
+
+**This is our shared pattern, not his bug.** He drove `unit-523`'s arm as a child inside `unit-529`;
+he drove `unit-526`'s inside `unit-527`; I drove `unit-526`'s inside `unit-528` this morning; I drove
+his this afternoon and it finally bit. *A frozen research file is frozen as SOURCE and wide open as
+OUTPUT — the freeze convention protects the `.mjs` and nothing protects the `captures/` the `.mjs`
+writes to, and the one operation guaranteed to trigger those writes is the control whose whole purpose
+is to re-drive the frozen arm. The discipline and the hazard are the same action.*
+
+Two things I am deliberately **not** claiming: that his figures were affected (they were not — every
+class, hazard and off-by figure byte-identical, `unit-529`'s grade untouched), and that my `P10` is
+invalid (it measured what it said; it also had an undeclared side effect, which is a different
+defect — *a control can be sound about its subject and still not be sound about the tree*).
+
+**Not boarded as mine:** three mitigations named in the addendum memo, cheapest being a
+`git status`-assert in every arm's §0 **after** any child drive so the side effect reddens instead of
+being caught at wrap by luck. It is a shared-convention item and Argus's seat has the better claim on
+a gate-shaped cure — named so the next seat to drive one of our arms does not rediscover it.
+
+**Incidental closure:** of the **2** files that grew the corpus `861 → 863`, **one is his own
+`unit-529` post-hoc** (`posthoc-key-collision.mjs:195`, landing in `INTERP-OR-ARG` on a line that
+itself reads `new Set(firings.DEF.map(…))`). The unit that measured the corpus joined it four commits
+later — so his §3 precondition keyed on corpus size would reject on drift the unit itself caused.
+
+**Fire closed ~15:2x PT.** Bounded, per Klatch's recorded exception to the platform duty-cycle drain
+baseline: day-part checklist done, the item it surfaced driven to a close and published, the side
+effect it caused found, restored and reported, state written down, successors boarded without
+deadlines, stop.
