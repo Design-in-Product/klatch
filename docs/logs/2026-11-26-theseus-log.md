@@ -412,3 +412,45 @@ republishes its census and frozen research files are not edited (settled 11/20).
 unit, explicitly NOT as a deferral with a dressed-up blocker** — that mistake is §1 of this entry.
 Carried items with no blocker (`L2`, `L3`, the `unit-516` §5 pattern defect, `SECOND-ARG`'s
 nested-call blindness, and now the hand-read of the 28) are the next fire's.
+
+### Session wrap verification (STOP fire)
+
+**Step 1 — commits landed on `origin/main`** (read at **19:59:41 PST**, `git log origin/main --oneline -5`):
+
+```
+0e063c1b coord+log(theseus): 11-26 STOP fire -- the 58-vs-58 deferral driven, the two 58s are not the same 58, and the 28-site blindness is in my own key; three closed threads moved to read/
+882859dd mail(theseus -> daedalus, argus): the two 58s are not the same 58, and the blindness I found is in my own key published this morning
+faf1b483 results(unit-526): the two 58s are not the same 58 -- 52 of 58 coincide on one pinned population, and unit-522's key is blind to 28 prefix-form sites nobody declared
+9a658c48 prereg(unit-526): the 58-vs-58 overlap -- two keys, equal published figures, intersection unmeasured; 12 predictions registered before the reader exists
+97021655 coord+log(iris): 11-26 STOP fire -- no-op on product ...
+```
+
+**Step 2 — each deliverable `ls`'d, byte sizes as read:**
+
+```
+docs/research/unit-526fiftyeight-2026-11-26/PRE-REGISTRATION.md    7,269 B
+docs/research/unit-526fiftyeight-2026-11-26/RESULTS.md            10,232 B
+docs/research/unit-526fiftyeight-2026-11-26/arm-fiftyeight.mjs    16,647 B
+docs/research/unit-526fiftyeight-2026-11-26/captures/ARM.out      28,012 B
+docs/research/unit-526fiftyeight-2026-11-26/captures/ARM.err           0 B
+docs/mail/theseus-to-daedalus-argus-…-the-two-58s-are-not-the-same-58-…-2026-11-26.md   10,088 B
+```
+
+The three `read/` moves and the one memo deliberately left visible were `ls`'d individually and all
+four are where this entry says: Daedalus's 11-26 reply, my 11-26 `6 of 60` memo and Argus's 11-26
+memo in `docs/mail/read/`; **Calliope's item-10 boarding memo still in `docs/mail/`**, because item
+10 is xian's and only his and a thread with an open decision stays visible.
+
+**Cross-repo, done in-fire and verified at the remote.** All four writable mailboxes checked for mail
+addressed to this seat — nothing newer than what is already answered here. Filed the **tenth
+datapoint** on xian's newsletter question-box thread (`dispatch`):
+`mail/addendum-theseus-2026-11-26-the-tenth-datapoint-is-a-lesson-i-wrote-myself-five-hours-earlier-filed-as-a-fact-about-its-instance.md`,
+commit `e328da2`, pushed `a8bd20d..e328da2 HEAD -> main`, **verified by `git -C dispatch ls-tree -r
+origin/main`** rather than from the local commit. Mechanism filed: the lesson was *mine*, written
+five hours earlier in the `6 of 60` memo, and it did not fire because it was filed as a fact about
+the two keys it came from. **One push correction, the standing one:**
+`-c user.email=xian@designinproduct.com` is rejected by GitHub email privacy on `dispatch`;
+`git log --format='%ae' -30 | sort | uniq -c` showed `xian@Amber.local` present and that is what
+landed, via `commit --amend --no-edit --reset-author`. No force push.
+
+**Step 3** — this log is the last thing pushed.
