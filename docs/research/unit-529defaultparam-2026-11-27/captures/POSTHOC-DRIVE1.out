@@ -1,0 +1,46 @@
+unit-529defaultparam — post-hoc: movement-key collision, and P5 re-verified positionally
+SHA 56b394c3d9d2 · clock 2026-11-27 13:29:04 PST
+corpus 861 files · population 126 sites
+WRITTEN AFTER THE ARM DROVE. Not pre-registered; it answers a defect the arm printed.
+
+─── Q1: key collisions under `path:line:receiver` ──────────────────────────────
+  sites 126 · distinct keys 122 · colliding keys 4 · members hidden behind another 4
+    docs/research/unit-465plant-2026-11-10/posthoc-precision-and-blindness.mjs:82:b                                2 sites
+      PUB classes: OTHER-BOUND/EMPTY | OTHER-BOUND/EMPTY
+        if (b.size === 0 || c.size === 0) return { refused: `0 literal declarations at ${b.size === 0 ? 'base' : 'candidate'}` };
+    docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:272:crossPairs                                          2 sites
+      PUB classes: MAP-BOUND/OTHER-N | MAP-BOUND/OTHER-N
+      pred('P1', crossPairs.size >= 10 && crossPairs.size <= 60,
+    docs/research/unit-466xjoin-2026-11-15/arm-xjoin-b.mjs:247:pairs                                               2 sites
+      PUB classes: MAP-BOUND/OTHER-N | MAP-BOUND/OTHER-N
+      pred('Q1', pairs.size >= 20 && pairs.size <= 150,
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188:seen            2 sites
+      PUB classes: UNRESOLVED/INVARIANCE | UNRESOLVED/INVARIANCE
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+
+  the consequence, stated as a figure rather than a caveat:
+    a keyed moved-row list can print at most 122 rows for a 126-site population,
+    so up to 4 member(s) can move without appearing in it.
+
+─── Q2: P5 verified positionally, with no key in the comparison ────────────────
+  PASS  Q2.0  populations are the same length                                        PUB=126 DEF=126
+  PASS  Q2.1  excludedDirectTails equal                                              PUB=60 DEF=60
+  PASS  Q2.2  the two runs are positionally ALIGNED (same path/line/receiver at every index) 0 index(es) misaligned
+  PASS  Q2.3  every positional difference is a site that was UNRESOLVED under PUB    0 non-UNRESOLVED difference(s)
+  PASS  Q2.4  the number of positionally moved sites is 2, not the keyed list’s 1    2 moved positionally
+  FAIL  Q2.5  the keyed walk undercounts the positional one by exactly the hidden members positional=2 keyed=1 hidden=4
+
+  every positional difference, whole:
+    [109] scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen
+         PUB UNRESOLVED/INVARIANCE bindLine=null  ->  DEF OTHER-BOUND/INVARIANCE bindLine=185
+           if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    [110] scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen
+         PUB UNRESOLVED/INVARIANCE bindLine=null  ->  DEF OTHER-BOUND/INVARIANCE bindLine=185
+           if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+
+  cure D firings: PUB 0 · DEF 2
+  distinct (name, line) pairs under DEF: 1
+    (P15 registered this at [2, 60] and it is 1: the two members are two USE SITES of
+     ONE binding, so a floor counted in members cannot be met by a census of bindings.)
+
+POST-HOC: A CELL FAILED  ·  5 of 6
