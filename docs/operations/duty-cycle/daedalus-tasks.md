@@ -201,7 +201,42 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   One of the two readings is wrong by 6 and **`unit-521`'s is the one the floor-of-11 claim rests
   on.** No mechanism is claimed in `unit-523` §6 and none should be guessed here — the deliverable is
   a per-file diff of the two tail readings over one pinned population.
-- [ ] **`new Set<T>(` — the binding reader's one-line blindness, worth ≥3 of 6 ceiling members** —
+- ✅ **`new Set<T>(` — TAKEN AND CLOSED BY DRIVE 2026-11-27 START
+  (`unit-527setgeneric-2026-11-27`, pre-reg `f9fa864272cf` at **09:21:05 PST** with the directory made
+  in the same command, two addenda both written before the arm existed, results/arm `1d209e6a`, memo
+  `4f92f2bf`).** **15 predictions, 14 HIT / 1 REFUTED. KP 13 of 13, CONTROL 14 of 14,
+  `ARM.err` and `CONTROL-523.err` both 0 B.** Over **858** instrument files: the `'new Set('` string
+  literal is blind to **71** generic sites across **37** files (`<string>` 53 · `<net.Socket>` 7 ·
+  `<number>` 5 · `<Hazard>` 4 · `<FlagKey>` 1 · `<ChildProcess>` 1), and **`new Map<…>(` is 88** —
+  the uncured half is the **larger** one (`L1`, boarded below). Curing the locator moves **4 of 126**
+  population members, **all** `OTHER-BOUND → SET-BOUND`, every other class and the population itself
+  unmoved; the **narrowed hazard goes 4 → 5 with guard `{BLIND: 5}`, so `unit-521`'s `GUARDED 0` now
+  holds across three syntactic forms** — direct, indirect-bound and generic-bound. **The reader was
+  SLICED, not retyped:** one contiguous 7,893 B region of the frozen `arm-indirectsize.mjs` between
+  two anchors each asserted to occur exactly once, instantiated twice, the `CURED` copy carrying four
+  anchored substitutions each asserted to apply exactly once with every before/after literal printed
+  into the capture; the frozen file was never written. **The control is what licenses it:** the frozen
+  arm driven **unchanged** at the same SHA, cell-for-cell equal on all ten classes plus population,
+  exclusions and hazard. **AGAINST ME, and this item's own text is the keeper: the boarding sentence
+  below was wrong about every number in it.** "Worth ≥3 of 6" is worth **1** of the 3 named; "all
+  three land in `UNRESOLVED`" is **false for one** (`bindingOf:150` carries an optional
+  `(?::[^=\n]*)?` annotation group, so `const picks = new Set<string>()` matches and member #8 is
+  `OTHER-BOUND`); "its three sites" is **two lines carrying three members** (`probe-round244…mts:188`
+  has two `.size === 1` comparisons on one line); and **3 of the 4 sites the cure actually moves were
+  named by nobody** (`unit-465bareline…mts:187`, `probe-round256…:905`, `probe-round265…:319`) — *a
+  hand-read set of instances is not the population a cure moves, and mine was 25% of it.* **Second
+  against me: P14 was refuted by my own source read twenty minutes after I registered it**, before
+  the arm existed — I derived correctly that `receiverSpan` stops at the `>` and then asserted a
+  conclusion about a site's *class* without reading the top of the pipeline that decides its
+  *membership*. **Third: the two `round244` members are unreachable by this cure under any locator**
+  — they are **default parameters**, and `bindingOf` reads declaration lines by construction, so the
+  item was two mechanisms wearing one name; `K4` is the known negative that proves it and the second
+  mechanism is boarded below. **The measured zeros are not dead arms:** no generic *direct* tail
+  exists in this corpus (so `unit-521`'s direct-tail census and its `11 → 16` are untouched), and
+  `K8` is the known positive that makes that zero a finding — a *planted* generic direct tail is
+  misclassified `CALL` by the published reader and excluded by the cured one. Original boarding text
+  follows.
+- ~~[ ]~~ **`new Set<T>(` — the binding reader's one-line blindness, worth ≥3 of 6 ceiling members** —
   boarded 2026-11-26 WORK as `unit-523`'s second successor. **No blocker.** `unit-523`'s binding
   reader keys `SET-BOUND` off a literal `new Set(` in the right-hand side of a `const|let|var` line,
   so a **TypeScript generic** (`const picks = new Set<string>()`,
@@ -218,6 +253,28 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   **#8's compared values come from a product call** (`resolveImportEntity(…).entityId`), making it the
   only one of the ten whose `.size === 1` is a claim about product behaviour. Still not reachable
   inside a STOP fire: the drive needs its own pre-registration and pinned population.
+- [ ] **`new Map<K, V>(` — the SAME locator blindness on the LARGER half, 88 generic sites against
+  the Set form's 71** — boarded 2026-11-27 START as `unit-527`'s first successor, so that closing the
+  item above does not delete the open work it stood in front of. **No blocker.** `unit-527`'s `L1`
+  declared the Map form out of scope and then **measured it**: `new Map<…>(` is **88** sites,
+  `new Map(` is 403, and `unit-523`'s `MAP-BOUND`/`MAP-EXPR` arms key on the literal `'new Map('`
+  exactly as `SET-BOUND` keyed on `'new Set('`. `MAP-BOUND` reads **10** while `OTHER-BOUND` still
+  holds **30** after the Set cure, so the Map members are sitting in `OTHER-BOUND` now. `K6` is
+  already the known negative for the uncured state. **What makes this worth doing rather than
+  symmetric bookkeeping:** `unit-523` has a standing self-recorded finding that `MAP-BOUND` was
+  **wrong by 60% (10, really 16) with no red anywhere**, so a Map-side cure lands on a figure that is
+  already known to be wrong and is the only arm in that census with a hand-corrected counterpart to
+  grade against. Fresh registration, own pinned population, own KP set — not an edit to a frozen arm.
+- [ ] **A binding reader that can see a DEFAULT PARAMETER — exact price, 2 members** — boarded
+  2026-11-27 START as `unit-527`'s second successor. **No blocker, and this is the smallest exactly
+  priced item on this list.** `bindingOf` (`unit-523`'s only hand-rolled reader) matches
+  `^[ \t]*(?:export\s+)?(?:const|let|var)\s+NAME…`, so `function f(seen = new Set<string>())` binds
+  nothing and the use site is `UNRESOLVED` under **both** `unit-527` instantiations — `K4` is the
+  known negative. Members: `scripts/probe-round244-…mts:188`, **twice on one line**
+  (`direct: seen.size === 1, via: seen.size === 1 ? …`), both `UNRESOLVED`, both `INVARIANCE`, both
+  **LIVE** per `unit-525` `READ.md` (#9 and #10 of the ten). **Do not board this as "the other
+  two-thirds of the generic item" — it is a different mechanism** that the generic locator cannot
+  reach, which is `unit-527` §3's third finding against me.
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a

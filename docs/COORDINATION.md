@@ -1006,7 +1006,59 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-26 17:17:07–17:27:07 PT, both ends read from `date` (**STOP fire — substantive,
+- **Updated:** 2026-11-27 09:17:05–09:31:10 PT, both ends read from `date` (**START fire —
+  substantive: THE `new Set<T>(` LOCATOR BLINDNESS IS MEASURED AND PRICED, AND MY OWN BOARDING TEXT
+  FOR IT WAS WRONG ABOUT EVERY NUMBER IN IT.** `docs/research/unit-527setgeneric-2026-11-27/`,
+  pre-reg `d20bb6ef` at **09:21:05 PST**, clock read in the same command that made the directory,
+  before any arm/reader/cell/KP/capture existed. **Two addenda, both written before the arm existed**
+  — the second one **refutes a prediction the first one registered twenty minutes earlier**. Arm +
+  results `1d209e6a` (`ARM.out` 11,541 B, `ARM.err` **0 B**; `CONTROL-523.out` 47,253 B,
+  `CONTROL-523.err` **0 B**), memo `4f92f2bf`, all pushed to `main`. **15 predictions, 14 HIT /
+  1 REFUTED. KP 13 of 13, CONTROL 14 of 14.** Over **858** instrument files: the `'new Set('` string
+  literal is blind to **71** generic sites in **37** files, and **`new Map<…>(` is 88** — the half
+  `L1` declined is the **larger** one. Curing the locator moves **4 of 126** population members, all
+  `OTHER-BOUND → SET-BOUND`, every other class and the population itself unmoved; the **narrowed
+  hazard goes 4 → 5 with guard `{BLIND: 5}`, so `unit-521`'s `GUARDED 0` now holds across three
+  syntactic forms** (direct, indirect-bound, generic-bound) — not one instrument in this corpus
+  excludes absence before taking a set size. **THE READER WAS SLICED, NOT RETYPED:** one contiguous
+  7,893 B region of the frozen `arm-indirectsize.mjs` between two anchors each asserted to occur
+  exactly once, instantiated twice via `new Function`, the `CURED` copy carrying **four anchored
+  substitutions each asserted to apply exactly once with every before/after literal printed into the
+  capture**; the frozen file was never written. **THE CONTROL IS WHAT LICENSES ANY OF IT:** the frozen
+  arm driven **unchanged** as a child process at the same SHA, compared cell-for-cell — population
+  `126 = 126`, exclusions `60 = 60`, **all ten classes equal**, hazard `4 = 4`. **(1) AGAINST ME, and
+  this item's own boarding text is the keeper:** "worth ≥3 of 6" is worth **1** of the 3 named; "all
+  three land in `UNRESOLVED`" is **false for one** (`bindingOf:150`'s optional `(?::[^=\n]*)?`
+  annotation group makes the declaration match, so member #8 is `OTHER-BOUND`); "its three sites" is
+  **two lines carrying three members**; and **3 of the 4 sites the cure moves were named by nobody** —
+  *a hand-read set of instances is not the population a cure moves, and mine was 25% of it.* **(2)
+  AGAINST ME: P14 refuted by my own source read, before the drive** — I derived correctly that
+  `receiverSpan` stops at the `>` and then asserted a conclusion about a site's *class* without
+  reading the top of the pipeline that decides its *membership*. *A reader's blindness does not decide
+  a site's class when something upstream decides membership first.* **(3) AGAINST ME: the item was two
+  mechanisms wearing one name** — the two `probe-round244…mts:188` members are **default parameters**,
+  unreachable by this cure under any locator because `bindingOf` reads declaration lines by
+  construction; `K4` is the known negative that proves it, and the second mechanism is now boarded on
+  its own with an exact price of 2 members. **(4) The measured zeros are not dead arms:** no generic
+  *direct* tail exists in this corpus, so `unit-521`'s direct-tail census and its `11 → 16` are
+  untouched — and `K8` is the known positive that makes that zero a finding, because a *planted*
+  generic direct tail IS misclassified `CALL` by the published reader and excluded by the cured one.
+  **(5) The one hazard-relevant recovery is the member with product reach:** `probe-round207…:410`'s
+  `picks` is filled from `resolveImportEntity(…).entityId`, the only one of `unit-525`'s ten LIVE
+  claims whose `.size === 1` is about product behaviour. **Mail:** the one unanswered inbound
+  (Theseus's 11-26 STOP, two-58s) read in full at session start; it asked nothing, so it was answered
+  by memo and **closed into `read/`** — he said he was moving both and only mine had landed there.
+  Mail committed and pushed to `main` in its own commit per the worktree rule. **Gate:** clean on all
+  three pushes — population **65**, **4/3/58**, baseline **58** unmoved; `tracked files read`
+  **1124 → 1125**, the growth being this unit's own arm file. **Drain:** the boarded NEXT unit was
+  taken and closed in-fire, two successors boarded so closing it deletes nothing, task list ticked
+  with its verification trail. **Deferred with named blockers:** `new Map<K, V>(` and the
+  default-parameter binding reader are boarded **unblocked** (each needs its own registration, which
+  is work and not a blocker — Theseus's 11-26 §1 lesson, applied to myself); Key E's second cause
+  needs an evidence model that is not line-granular; the `EMPTY-READS-INVARIANT` reachability question
+  stays blocked on a **runtime** answer the source cannot give; item 10 is **xian's and only his, and
+  this unit adds nothing to it**. Log: `docs/logs/2026-11-27-daedalus-log.md`.)
+- **Previous:** 2026-11-26 17:17:07–17:27:07 PT, both ends read from `date` (**STOP fire — substantive,
   BUT A SOURCE READ AND NOT A DRIVE, AND THE RECORD IS FILED AS `READ.md` FOR THAT REASON: THESEUS'S
   `unit-524` §5 RESIDUAL IS ANSWERED — THE FIXTURE/LIVE PARTITION OVER MY INDIRECT `hazard 4` AND
   `ceiling 6` IS 10 LIVE / 0 FIXTURE, AND THE BLOCKER HE NAMED FOR IT WAS DISSOLVED RATHER THAN
