@@ -1,0 +1,312 @@
+=== §0 subject state, asserted before any measurement ===
+
+  HEAD: 5f9f13ff
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY — this unit is a no-op on product
+  frozen subjects + scripts/lib dirty? NO — every slice below is of committed text
+
+=== §1 SLICES — abort on any failure ===
+
+  u-522  UNIT_TAIL   /^[}\s)\]'"`,.:;+\-=]{0,8}(B|bytes|byte)\b/
+  u-522  extRe       /\.(mjs|js)$/   (off docs/research/unit-522lengthasbytes-2026-11-26/captures/ARM.out, not retyped)
+  u-522  regionOf    sliced, 8 lines, both stripSource passes present
+  u-526  sitesT      sliced, 20 lines, references UNIT_TAIL and regionOf
+  arm C  BUFFERISH   /readFileSync\([^,)]*\)\s*\.length|Buffer\.|\.byteLength/
+  arm C  ARRAYLIKE   /\.split\([^)]*\)\.length|\.filter\([^)]*\)\.length|\.match\([^)]*\)\.length|rows\.length|files\.length|\bconjuncts?\.length/i
+  arm C  isComment   /^\s*(\/\/|\*|\/\*)/
+  arm C  THIS_UNIT   docs/research/unit-465byteslabel-2026-11-13
+
+=== §2 THE CURE — an ADDED PREFIX DISJUNCT, specified in PRE-REGISTRATION §3 before this file ===
+
+  PREFIX_UNIT  /\b(B|bytes|byte)\b(?:\s*[:=]\s*|\s+)(?:\$\{)?[A-Za-z0-9_$.\[\]'"`()?|&!\s+\-]{0,40}$/
+  applied to:  head = line.slice(0, idx); headCut = head.slice(head.lastIndexOf('}') + 1)
+
+=== §3 KNOWN POSITIVES / NEGATIVES — the cure must select AND must refuse ===
+
+  PASS  KP1  (SLICED )  want bytes/LABEL-IN-STRING  got bytes/LABEL-IN-STRING
+        docs/research/round419-instruments/drive-his-418.mjs:45 — the `stdout bytes: ${x.length}` shape, in an interpolation
+  PASS  KP2  (SLICED )  want bytes/IDENT-IN-CODE    got bytes/IDENT-IN-CODE
+        docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167 — the `bytes: src.length,` object-property shape, NOT in a string
+  PASS  KP3  (SLICED )  want bytes/LABEL-IN-STRING  got bytes/LABEL-IN-STRING
+        docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs:94 — `bytes: ${span.length}` after other interpolations on the line
+  PASS  KN1  (PLANTED)  want NONE                   got NONE
+        subject merely NAMED bytes — no separator, must be refused (that is L3, not this cure)
+  PASS  KN2  (PLANTED)  want NONE                   got NONE
+        a token 30+ chars from an UNRELATED .length in the same segment — the distance/segment guard
+  PASS  KN3  (PLANTED)  want NONE                   got NONE
+        no unit token at all — the cure must refuse it entirely
+  PASS  KN4  (PLANTED)  want NONE                   got NONE
+        arm C's own known false positive shape — `bytes` is a division operand in a PREVIOUS interpolation; the `}`-cut must exclude it
+
+  7 of 7 known positives/negatives pass
+  HIT      P7  KN gate — every known NEGATIVE refused
+           registered true   measured true
+  HIT      P10  KP gate — every known POSITIVE selected and regioned
+           registered true   measured true
+
+=== §4 POPULATION — one pinned population, both readings over it ===
+
+  git ls-files: 7813
+  T-POP (unit-522's own filter, minus this fire's instruments and the frozen arms): 655
+  excluded: docs/research/unit-528prefixform-2026-11-27/arm-prefixform.mjs, docs/research/unit-522lengthasbytes-2026-11-26/arm-lengthasbytes.mjs, docs/research/unit-522lengthasbytes-2026-11-26/posthoc-which-133.mjs, docs/research/unit-526fiftyeight-2026-11-26/arm-fiftyeight.mjs
+  HIT      P3  T-POP today
+           registered [654, 668]   measured 655
+
+=== §5 THE DIFFERENTIAL — PUBLISHED (sliced) vs CURED (published ∨ prefix) ===
+
+  PUBLISHED  bytes-token LABEL-IN-STRING over T-POP:  58   (unit-526 published 58 on 2026-11-26's tree)
+  PREFIX     bytes-token LABEL-IN-STRING over T-POP:  17
+  BOTH       (a token on each side of the same .length): 0
+  CURED      union:                                   72
+  ADDED      by the cure, not seen by the published key: 14
+  LOST       by the cure:                             0
+  total '.length' occurrences in T-POP:               14999
+  HIT      P2  PUBLISHED reading over T-POP today
+           registered [58, 70]   measured 58
+  REFUTED  P4  the cure's GROSS REACH — sites added, non-empty required
+           registered [28, 140]   measured 14
+  HIT      P4-nonempty  the ADDED set is non-empty (registered apart from the interval)
+           registered true   measured true
+  REFUTED  P6  sites with a token on BOTH sides — non-empty
+           registered true   measured false
+  HIT      P11  the cure loses nothing (it adds a disjunct)
+           registered true   measured true
+  HIT      P12  vacuity floor — '.length' occurrences in T-POP >= 2000
+           registered true   measured true
+
+=== §6 unit-526's 28 — recovered off its OWN capture, never retyped ===
+
+  unit-526 DECLARED the figure as: 28
+  site lines recovered from its capture: 28
+  HIT      P5-recovery  the 28 recovered off the capture equals the declared figure
+           registered true   measured true
+  of the 28, ADDED by the cure:        12
+  of the 28, outside T-POP entirely:   0
+  of the 28, NOT added, with reason printed below: 16
+      docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:157   REFUSED by the cure
+        `${mv('comments').padEnd(9)} ${mv('bytes').padEnd(15)} ${under.length ? under.join(' / ') : '(none)'}`);
+      docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167   REFUSED by the cure
+        bytes: src.length,
+      docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:242   REFUSED by the cure
+        console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join(', ') : '(none)'}`);
+      docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs:107   REFUSED by the cure
+        rows.push({ arm, pre: drive(PRE, p), post: drive(SUBJECT, p), bytes: mutated.length });
+      docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:203   REFUSED by the cure
+        bytes: src.length,
+      docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:234   REFUSED by the cure
+        console.log(`  M-child   exit=${child.status}  stderrBytes=${(child.stderr ?? '').length}  stdoutBytes=${childOut.length}`);
+      docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs:25   REFUSED by the cure
+        `status=${r.status}\nsignal=${r.signal}\nerror=${r.error ? r.error.message : 'none'}\nstarted=${started}\nended=${ended}\nstdout_bytes=${(r.stdout ?? '').length}\n`,
+      docs/research/unit-490partitionformat-2026-11-20/arm-partitionformat.mjs:272   REFUSED by the cure
+        console.log(`  IN-POPULATION (own bytes match inside a live partition row): ${inPop.length}`);
+      docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:61   REFUSED by the cure
+        console.log(`  bytes attributable to the WIDENING: ${wide.stdout.length - narrow.stdout.length}`);
+      docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:83   REFUSED by the cure
+        before: { source: 'captures/d4-clean-after-reset.out', bytes: before.length, lines: A.length, sha: sha(before) },
+      docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:84   REFUSED by the cure
+        after: { source: 'driven fresh in this post-hoc', bytes: after.length, lines: B.length, sha: sha(after) },
+      docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:21   REFUSED by the cure
+        bytes: buf.length,
+      docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:93   REFUSED by the cure
+        leg2.push({ cell, reader, same, baseSha: sha(base), gotSha: sha(got), bytes: got.length });
+      docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:164   REFUSED by the cure
+        p6 = { ran: true, occ, reversible, V: { rc: V.rc, bytes: V.stdout.length, sha: sha(V.stdout), stderr: V.stderr.length }, R: { rc: R.rc, bytes: R.stdout.length, sha: sha(R.stdout), stderr: R.stderr.length }, verdictIdentical: verdictOf(V.stdout) === verdictOf(R.stdout), rows: pr, breaks: breaks.length, survivors: survivors.length, dead: dead.length, worst: worst.length };
+      docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs:64   REFUSED by the cure
+        Object.entries(capBytes).map(([k, v]) => [k, { sha12: sha12(v), bytes: v.length }]),
+      scripts/measure-marker-floor.mjs:296   REFUSED by the cure
+        `(${((chars / bytes) * 100).toFixed(2)}%), from ${contributing.length} of ${accounting.length} files`);
+  REFUTED  P5  of unit-526's 28, how many the cure adds
+           registered [24, 28]   measured 12
+  HIT      P9  the cure REFUSES scripts/measure-marker-floor.mjs:296 — arm C's own known false positive
+           registered true   measured true
+
+=== §7 HAND-READ EVIDENCE for the 28 — the arm supplies, it does NOT judge ===
+
+  For each of the 28: the whole line, the subject expression immediately before `.length`, the
+  root identifier of that subject, and EVERY declaration/assignment line for that identifier in
+  the same file. arm C's BUFFERISH is a LINE-LEVEL test, so a subject declared on another line is
+  invisible to it. P8 is a prediction about what those declarations say. The VERDICTS are mine,
+  in RESULTS.md, read off this capture — not computed here.
+
+  [ 1] docs/research/round419-instruments/drive-his-418.mjs:45
+       line:    say(`exit: ${r.status}   stdout bytes: ${(r.stdout || '').length}   stderr bytes: ${(r.stderr || '').length}`);
+       subject: (unparsed)   root: (none)   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [ 2] docs/research/round420-instruments/drive-his-419.mjs:120
+       line:    say(`exit: ${r.status}  stdout bytes: ${(r.stdout || '').length}  stderr bytes: ${(r.stderr || '').length}`);
+       subject: (unparsed)   root: (none)   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [ 3] docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71
+       line:    `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+       subject: sliceText   root: sliceText   arm C class: STRING   line-level BUFFERISH: false
+       decl@  61 *BUFFER-SHAPED* const sliceText = readFileSync(join(REPO, SLICE), 'utf8');
+  [ 4] docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95
+       line:    `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+       subject: sliceText   root: sliceText   arm C class: STRING   line-level BUFFERISH: false
+       decl@  73 *BUFFER-SHAPED* const sliceText = readFileSync(join(REPO, SLICE), 'utf8');
+  [ 5] docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:157
+       line:    `${mv('comments').padEnd(9)} ${mv('bytes').padEnd(15)} ${under.length ? under.join(' / ') : '(none)'}`);
+       subject: under   root: under   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 155                const under = variants.filter(([, fields]) => derive(fields, [r]).saturated).map(([n]) => n);
+  [ 6] docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167
+       line:    bytes: src.length,
+       subject: src   root: src   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 160                const src = execFileSync('git', ['show', `${rev}^:${join('scripts', f)}`],
+  [ 7] docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:242
+       line:    console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join(', ') : '(none)'}`);
+       subject: upstreamMoved   root: upstreamMoved   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 239                const upstreamMoved = [...new Set([...movedOn('raw'), ...movedOn('comments'), ...movedOn('bytes')])];
+  [ 8] docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs:107
+       line:    rows.push({ arm, pre: drive(PRE, p), post: drive(SUBJECT, p), bytes: mutated.length });
+       subject: mutated   root: mutated   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 102                const mutated = fn(live);
+  [ 9] docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:203
+       line:    bytes: src.length,
+       subject: src   root: src   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 196                const src = execFileSync('git', ['show', `${rev}^:${join('scripts', f)}`],
+  [10] docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:234
+       line:    console.log(`  M-child   exit=${child.status}  stderrBytes=${(child.stderr ?? '').length}  stdoutBytes=${childOut.length}`);
+       subject: (unparsed)   root: (none)   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [11] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:129
+       line:    return { ok: same, detail: `bytes=${armSrc.length} identical=${same}` };
+       subject: armSrc   root: armSrc   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 103                const armSrc = git(['show', `${ARM_REV}:${ARMPATH}`]);
+  [12] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:169
+       line:    detail: `exit=${run.status} · headline=${JSON.stringify(headline)} · stderr bytes=${(run.stderr || '').length}`,
+       subject: (unparsed)   root: (none)   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [13] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:194
+       line:    return { ok: live === blob, detail: `live bytes=${live.length} rev bytes=${blob.length} identical=${live === blob}` };
+       subject: live   root: live   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 193                const live = readFileSync(LIVE, 'utf8');
+  [14] docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs:25
+       line:    `status=${r.status}\nsignal=${r.signal}\nerror=${r.error ? r.error.message : 'none'}\nstarted=${started}\nended=${ended}\nstdout_bytes=${(r.stdout ?? '').length}\n`,
+       subject: (unparsed)   root: (none)   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [15] docs/research/unit-490partitionformat-2026-11-20/arm-partitionformat.mjs:272
+       line:    console.log(`  IN-POPULATION (own bytes match inside a live partition row): ${inPop.length}`);
+       subject: inPop   root: inPop   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 261                if (!m.compiles) { m.inPop = false; m.baseHit = null; continue; }
+       decl@ 264                m.inPop = Boolean(hit && rowSet.has(hit.lineText));
+       decl@ 267                const inPop = members.filter((m) => m.inPop);
+  [16] docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:61
+       line:    console.log(`  bytes attributable to the WIDENING: ${wide.stdout.length - narrow.stdout.length}`);
+       subject: wide.stdout   root: wide   arm C class: STRING   line-level BUFFERISH: false
+       decl@  44                const wide = spawnSync(process.execPath, [GATE], { encoding: 'buffer', cwd: ROOT });
+  [17] docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:60
+       line:    console.log(`green rc=${green.status} bytes=${green.stdout.length} lines=${g.length - 1}`);
+       subject: green.stdout   root: green   arm C class: STRING   line-level BUFFERISH: false
+       decl@  45                let green, red;
+       decl@  47                green = drive();
+  [18] docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:61
+       line:    console.log(`red   rc=${red.status} bytes=${red.stdout.length} lines=${r.length - 1}`);
+       subject: red.stdout   root: red   arm C class: STRING   line-level BUFFERISH: false
+       decl@  51                red = drive();
+  [19] docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:83
+       line:    before: { source: 'captures/d4-clean-after-reset.out', bytes: before.length, lines: A.length, sha: sha(before) },
+       subject: before   root: before   arm C class: STRING   line-level BUFFERISH: false
+       decl@  29 *BUFFER-SHAPED* const before = readFileSync(join(CAP, 'd4-clean-after-reset.out'));
+  [20] docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-whose-bytes-moved.mjs:84
+       line:    after: { source: 'driven fresh in this post-hoc', bytes: after.length, lines: B.length, sha: sha(after) },
+       subject: after   root: after   arm C class: STRING   line-level BUFFERISH: false
+       decl@  32                const after = r.stdout;
+  [21] docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:21
+       line:    bytes: buf.length,
+       subject: buf   root: buf   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [22] docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:93
+       line:    leg2.push({ cell, reader, same, baseSha: sha(base), gotSha: sha(got), bytes: got.length });
+       subject: got   root: got   arm C class: STRING   line-level BUFFERISH: false
+       decl@  58                const got = raw.split(args.includes('-z') ? NUL : '\n').filter(Boolean)[0];
+       decl@  91                const got = read(tag, 'out');
+       decl@ 112                const got = read(`${reader}-${cell}`, 'out');
+  [23] docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:164
+       line:    p6 = { ran: true, occ, reversible, V: { rc: V.rc, bytes: V.stdout.length, sha: sha(V.stdout), stderr: V.stderr.length }, R: { rc: R.rc, bytes: R.stdout.length, sha: sha(R.stdout), stderr: R.stderr.length }, verdictIdentical: verdictOf(V.stdout) === verdictOf(R.stdout), rows: pr, breaks: breaks.length, survivors: survivors.length, dead: dead.length, worst: worst.length };
+       subject: V.stdout   root: V   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 121                const V = drive(SCRATCH_V);
+  [24] docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs:64
+       line:    Object.entries(capBytes).map(([k, v]) => [k, { sha12: sha12(v), bytes: v.length }]),
+       subject: v   root: v   arm C class: STRING   line-level BUFFERISH: false
+       decls:   (none found in this file — a parameter, an import, or a destructure this key cannot see)
+  [25] docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs:94
+       line:    say(`  span anchors found: ${spanFound}   bytes: ${span.length}`);
+       subject: span   root: span   arm C class: STRING   line-level BUFFERISH: false
+       decl@  79                const span = spanFound ? priorSrc.slice(sa, sb) : '';
+  [26] docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs:50
+       line:    console.log(`git diff --stat HEAD -- packages/ scripts/  rc=${diff.status}  bytes=${diff.stdout.length}`);
+       subject: diff.stdout   root: diff   arm C class: STRING   line-level BUFFERISH: false
+       decl@  45                const diff = spawnSync('git', ['diff', '--stat', 'HEAD', '--', 'packages/', 'scripts/'], {
+  [27] docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs:57
+       line:    console.log(`  bytes ${slice.length} (arm: ${EXPECT.bytes})  offsets ${si}..${closeAt + 3} (arm: ${EXPECT.from}..${EXPECT.to})`);
+       subject: slice   root: slice   arm C class: STRING   line-level BUFFERISH: false
+       decl@  52                let slice = probeSrc.slice(si, closeAt + 3);
+       decl@  75                slice = slice.split(from).join(to);
+  [28] scripts/measure-marker-floor.mjs:296
+       line:    `(${((chars / bytes) * 100).toFixed(2)}%), from ${contributing.length} of ${accounting.length} files`);
+       subject: contributing   root: contributing   arm C class: STRING   line-level BUFFERISH: false
+       decl@ 294                const contributing = accounting.filter((a) => a.rows > 0);
+
+  sites with at least one BUFFER-SHAPED declaration line elsewhere in the file: 3
+  (declaration lines matching the buffer shape, total: 3)
+  HIT      P8  at least one of the 28 has a Buffer-shaped subject declaration on ANOTHER line — invisible to arm C's line-level BUFFERISH
+           registered true   measured true
+  P13 (true mislabels among the 28) is NOT graded here — it is a hand-read, graded in RESULTS.md §4 off this capture.
+
+=== §8 EVERY site the cure ADDS, whole line — so over-reach is auditable, not asserted ===
+
+  [  1] docs/research/round419-instruments/drive-his-418.mjs:45
+        say(`exit: ${r.status}   stdout bytes: ${(r.stdout || '').length}   stderr bytes: ${(r.stderr || '').length}`);
+  [  2] docs/research/round420-instruments/drive-his-419.mjs:120
+        say(`exit: ${r.status}  stdout bytes: ${(r.stdout || '').length}  stderr bytes: ${(r.stderr || '').length}`);
+  [  3] docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71
+        `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+  [  4] docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95
+        `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+  [  5] docs/research/round451-instruments/strip-zwsp.mjs:11
+        console.log(`removed=${n} remaining=${after.split(zwsp).length - 1} bytes ${before.length}->${after.length}`);
+  [  6] docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-b.mjs:178
+        console.log(`          K1 (same-line bytes + .length): ${k1.length} total, ${k1Defect.length} outside this unit`);
+  [  7] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:129
+        return { ok: same, detail: `bytes=${armSrc.length} identical=${same}` };
+  [  8] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:169
+        detail: `exit=${run.status} · headline=${JSON.stringify(headline)} · stderr bytes=${(run.stderr || '').length}`,
+  [  9] docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:194
+        return { ok: live === blob, detail: `live bytes=${live.length} rev bytes=${blob.length} identical=${live === blob}` };
+  [ 10] docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:60
+        console.log(`green rc=${green.status} bytes=${green.stdout.length} lines=${g.length - 1}`);
+  [ 11] docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs:61
+        console.log(`red   rc=${red.status} bytes=${red.stdout.length} lines=${r.length - 1}`);
+  [ 12] docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs:94
+        say(`  span anchors found: ${spanFound}   bytes: ${span.length}`);
+  [ 13] docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs:50
+        console.log(`git diff --stat HEAD -- packages/ scripts/  rc=${diff.status}  bytes=${diff.stdout.length}`);
+  [ 14] docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs:57
+        console.log(`  bytes ${slice.length} (arm: ${EXPECT.bytes})  offsets ${si}..${closeAt + 3} (arm: ${EXPECT.from}..${EXPECT.to})`);
+
+=== §9 CONTROL — unit-526's frozen arm driven UNCHANGED as a child at this same pin ===
+
+  child exit: 0   stdout 27931 chars   stderr 0 chars
+  control's own published-key figure: 58
+  control's own T-POP:                655   (this arm's: 655; differs by its own EXCLUDE set)
+  HIT      P1  CONTROL — the frozen arm's published-key figure equals this arm's sliced PUBLISHED reading
+           registered true   measured true
+
+=== §10 GRADING ===
+
+  HIT      P7           KN gate — every known NEGATIVE refused
+  HIT      P10          KP gate — every known POSITIVE selected and regioned
+  HIT      P3           T-POP today
+  HIT      P2           PUBLISHED reading over T-POP today
+  REFUTED  P4           the cure's GROSS REACH — sites added, non-empty required
+  HIT      P4-nonempty  the ADDED set is non-empty (registered apart from the interval)
+  REFUTED  P6           sites with a token on BOTH sides — non-empty
+  HIT      P11          the cure loses nothing (it adds a disjunct)
+  HIT      P12          vacuity floor — '.length' occurrences in T-POP >= 2000
+  HIT      P5-recovery  the 28 recovered off the capture equals the declared figure
+  REFUTED  P5           of unit-526's 28, how many the cure adds
+  HIT      P9           the cure REFUSES scripts/measure-marker-floor.mjs:296 — arm C's own known false positive
+  HIT      P8           at least one of the 28 has a Buffer-shaped subject declaration on ANOTHER line — invisible to arm C's line-level BUFFERISH
+  HIT      P1           CONTROL — the frozen arm's published-key figure equals this arm's sliced PUBLISHED reading
+
+  11 HIT / 3 REFUTED of 14 graded here (P13 is hand-read in RESULTS.md)
+  KP/KN: 7 of 7
