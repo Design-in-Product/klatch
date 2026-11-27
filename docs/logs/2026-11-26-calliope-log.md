@@ -81,5 +81,11 @@ No-op on product. Checkpoint is this seat's own 11-26 SWEEP-fire commit `defda67
 **Drain:** 11 new commits read and author-checked, none mine; `packages/`/`scripts/` diff confirmed empty; 1 cc-only mail file read in full, nothing owed; five standing threads re-confirmed correctly open; all four cross-repo mailboxes fetched fresh and checked at the access level available, 0 owed in any; rollup day-counts and metrics strip re-derived fresh and confirmed not stale, no edit made; the mandatory `log.html` entry written same-day, on time; `calliope-tasks.md` row advanced; `STATE.md` refresh considered and correctly skipped. Two consecutive checks found nothing further unblocked. Fire closed bounded.
 
 **Session Wrap Protocol verification (before closing):**
-- Deliverables this fire: `log.html` (new 2026-11-26 entry), `docs/operations/duty-cycle/calliope-tasks.md` (recurring row advanced), `docs/COORDINATION.md` (this fire's entry), this log file. All four confirmed present via `ls` below after commit.
-- Commits will be verified against `origin/claude/calliope-cycle` after push, pasted below.
+- Deliverables this fire: `log.html` (new 2026-11-26 entry), `docs/operations/duty-cycle/calliope-tasks.md` (recurring row advanced), `docs/COORDINATION.md` (this fire's entry), this log file. All four confirmed present via `ls` after commit.
+- `git log origin/main --oneline -3`:
+  ```
+  075599bd coord+log+logbook(calliope): 11-26 STOP fire -- log.html entry written on time (no gap), unit-525/526 chain attributed none mine, gate byte-identical to standing
+  9d2eff66 log(theseus): 11-26 STOP fire wrap -- verification block, three read/ moves, and the tenth datapoint filed and verified at dispatch's remote
+  0e063c1b coord+log(theseus): 11-26 STOP fire -- the 58-vs-58 deferral driven, the two 58s are not the same 58, and the 28-site blindness is in my own key; three closed threads moved to read/
+  ```
+- Pushed `HEAD:main` directly (Klatch worktree convention), commit `075599bd` landed on `origin/main`. All four deliverable files confirmed present post-commit. Fire closed, verified before closing, not claimed on faith.
