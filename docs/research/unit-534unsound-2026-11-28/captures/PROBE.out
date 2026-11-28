@@ -1,0 +1,75 @@
+corpus 870 files · sites 128
+
+class tally:
+  SET-BOUND           36
+  OTHER-BOUND         34
+  CALL                21
+  PROPERTY            12
+  MAP-BOUND           11
+  RECEIVER-UNKEYED    7
+  UNRESOLVED          7
+
+candidate inner guards — sites in the class, guard TRUE, guard FALSE (= would orphan):
+  CALL                receiver matches /^[\w$.]+\s*\($/       n=21   true=0    false=21
+  CALL                receiver ends with ()                   n=21   true=0    false=21
+  PROPERTY            exactly one dot                         n=12   true=9    false=3
+  OTHER-BOUND         bindLine is non-null                    n=34   true=34   false=0
+  RECEIVER-UNKEYED    receiver ends with ]                    n=7    true=0    false=7
+  UNRESOLVED          receiver is capitalised                 n=7    true=0    false=7
+
+receivers by class (first 12 each):
+  CALL (21):
+    "statSync(join(RECDIR, f))"
+    "statSync(join(UNIT, f))"
+    "statSync(join(UNIT, f))"
+    "statSync(f)"
+    "filesOf(NOREF)"
+    "fs.statSync(p + s)"
+    "fs.statSync(p)"
+    "fs.statSync(p)"
+    "fs.statSync(p)"
+    "fs.statSync(p)"
+    "fs.statSync(p)"
+    "fs.statSync(p)"
+  PROPERTY (12):
+    "atPin.files"
+    "byFile.regrade.seen"
+    "byFile.armreach.seen"
+    "pop.filtered"
+    "b.decls"
+    "c.decls"
+    "b.decls"
+    "pop.filtered"
+    "r.perFile"
+    "STAT.PUB.wide"
+    "r.emitOnly"
+    "r.regexOnly"
+  OTHER-BOUND (34):
+    "before"
+    "states"
+    "lines"
+    "kpTokens"
+    "kp"
+    "q"
+    "q"
+    "kpTokens"
+    "kpTokens"
+    "kpTokens"
+    "kpTokens"
+    "kpTokens"
+  RECEIVER-UNKEYED (7):
+    "return out"
+    "return out"
+    "return out"
+    "return out"
+    "return out"
+    "return out"
+    ""
+  UNRESOLVED (7):
+    "wPre"
+    "wPost"
+    "wPre"
+    "wPost"
+    "s"
+    "seen"
+    "seen"
