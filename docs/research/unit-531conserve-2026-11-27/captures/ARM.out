@@ -1,0 +1,99 @@
+unit-531conserve — which premise carries the conservation result?
+  HEAD 349ab0ab6ca4 · clock 2026-11-27 17:24:00 PST · pre-registration 349ab0ab
+  subject docs/research/unit-529defaultparam-2026-11-27/arm-defaultparam.mjs (sha12 af30d0f95cf8)
+  frozen  docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs (sha12 35e449901131)
+  donor   docs/research/unit-527setgeneric-2026-11-27/arm-setgeneric.mjs (sha12 dbebb76f4491)
+  region sliced out of the subject: 9855 B, run verbatim via new Function
+  NO frozen arm driven as a child this fire (unit-529 addendum). Subjects read, never executed.
+
+─── cells ──────────────────────────────────────────────────────────────────────
+  MISS  P8  CONTROL: the sliced region at the REAL injections reproduces unit-529's published capture
+          36 of 48 equal · population PUB: capture=126 here=127 · exclusions PUB: capture=60 here=63 · population DEF: capture=126 here=127 · exclusions DEF: capture=60 here=63 · population GEN: capture=126 here=127 · exclusions GEN: capture=60 here=63 · population BOTH: capture=126 here=127 · exclusions BOTH: capture=60 here=63 · MAP-BOUND PUB: capture=10 here=11 · MAP-BOUND DEF: capture=10 here=11 · MAP-BOUND GEN: capture=10 here=11 · MAP-BOUND BOTH: capture=10 here=11
+  HIT   P2  the subject has NO cross-label site-population assertion
+          sites.length assertion lines: 279, 280, 380 — all per-label; the :176 throw is on corpus.length (FILES): confirmed
+  HIT   P3  cure G changes MEMBERSHIP: K15 reproduces (CALL under PUB/DEF, EXCLUDED under GEN/BOTH)
+          PUB=CALL/INVARIANCE  DEF=CALL/INVARIANCE  GEN=EXCLUDED  BOTH=EXCLUDED
+  HIT   P3b the region's whole KP set passes inside my drive
+          15 of 15
+  HIT   P4  the real corpus contains ZERO generic direct `.size <op> <n>` tails
+          0 found · corpus 865 files
+  HIT   P9  the synthetic harness is graded before it is used
+          24 of 24
+  HIT   P9b the synthetic drive read ONLY the synthetic corpus
+          sh stub calls 4 (4 = one per instantiation) · readFileSync misses 0
+  HIT   P5  the SITE population is NOT constant across the four labels on the synthetic corpus
+          PUB=5 · DEF=5 · GEN=4 · BOTH=4
+  MISS  P6  on the synthetic corpus, the off-by column sums to something OTHER than zero
+          Σ offby = 0 · S_l = PUB:5 DEF:5 GEN:4 BOTH:4
+  MISS  P7  on the synthetic corpus, `classes where addition FAILS` is exactly 1
+          FAILS = 0 (none)
+  HIT   P10 REGISTERED CONCESSION: on the real corpus the off-by column sums to zero
+          Σ offby = 0 · FAILS = 2 (SET-BOUND +2, OTHER-BOUND -2)
+  HIT   P11 AGAINST ME: unit-529's RESULTS.md carries no conservation qualification either
+          0 qualifying line(s) in docs/research/unit-529defaultparam-2026-11-27/RESULTS.md
+  HIT   P1  partition failure is NOT sufficient to break conservation: drop a class from the ten and the column still sums to zero
+          nine classes (no SET-TAIL-DIRECT): Σ = 0 · nine classes (no CALL): Σ = 0 — an orphaning that is IDENTICAL at all four labels changes nothing
+  HIT   P12 the denominator depends on cure G ALONE, so S_PUB = S_DEF and S_GEN = S_BOTH — and THAT is what forces the zero
+          synthetic: S_PUB=5 S_DEF=5 S_GEN=4 S_BOTH=4 — the population MOVED (P5) and the column STILL sums to zero
+
+  11 of 14 cells HIT
+
+─── the real corpus (control) ───────────────────────────────────────────────────
+  population            127     127     127     127     
+  excludedDirectTails   63      63      63      63      
+  class sum S_l         127     127     127     127     
+
+  class                PUB     DEF     GEN     BOTH    offby
+  SET-BOUND            36      36      40      42      +2
+  SET-EXPR             0       0       0       0       0
+  MAP-BOUND            11      11      11      11      0
+  MAP-EXPR             0       0       0       0       0
+  OTHER-BOUND          34      36      30      30      -2
+  UNRESOLVED           7       5       7       5       0
+  PROPERTY             11      11      11      11      0
+  CALL                 21      21      21      21      0
+  RECEIVER-UNKEYED     7       7       7       7       0
+  SET-TAIL-DIRECT      0       0       0       0       0
+  Σ offby = 0 · FAILS = 2
+
+─── the synthetic corpus (the denominator moved) ────────────────────────────────
+  F1.mjs a plain bound Set — the regression plant
+  F2.mjs a GENERIC bound Set — cure G reclassifies it, population unmoved
+  F3.mjs THE DENOMINATOR MOVER: a GENERIC direct tail — a population MEMBER under PUB, EXCLUDED under G
+  F4.mjs F3's matched negative: a PLAIN direct tail, excluded under all four
+  F5.mjs cure D's own shape — a plain Set as a default parameter
+  F6.mjs a bound Map — untouched by either cure
+
+  population            5       5       4       4       
+  excludedDirectTails   1       1       2       2       
+  class sum S_l         5       5       4       4       
+
+  class                PUB     DEF     GEN     BOTH    offby
+  SET-BOUND            1       2       2       3       0
+  MAP-BOUND            1       1       1       1       0
+  OTHER-BOUND          1       1       0       0       0
+  UNRESOLVED           1       0       1       0       0
+  CALL                 1       1       0       0       0
+  Σ offby = 0 · FAILS = 0
+
+─── the planted sites, per label ────────────────────────────────────────────────
+  F1.mjs want PUB=SET-BOUND  DEF=SET-BOUND  GEN=SET-BOUND  BOTH=SET-BOUND
+       got  PUB=SET-BOUND  DEF=SET-BOUND  GEN=SET-BOUND  BOTH=SET-BOUND
+  F2.mjs want PUB=OTHER-BOUND  DEF=OTHER-BOUND  GEN=SET-BOUND  BOTH=SET-BOUND
+       got  PUB=OTHER-BOUND  DEF=OTHER-BOUND  GEN=SET-BOUND  BOTH=SET-BOUND
+  F3.mjs want PUB=CALL  DEF=CALL  GEN=ABSENT  BOTH=ABSENT
+       got  PUB=CALL  DEF=CALL  GEN=ABSENT  BOTH=ABSENT
+  F4.mjs want PUB=ABSENT  DEF=ABSENT  GEN=ABSENT  BOTH=ABSENT
+       got  PUB=ABSENT  DEF=ABSENT  GEN=ABSENT  BOTH=ABSENT
+  F5.mjs want PUB=UNRESOLVED  DEF=SET-BOUND  GEN=UNRESOLVED  BOTH=SET-BOUND
+       got  PUB=UNRESOLVED  DEF=SET-BOUND  GEN=UNRESOLVED  BOTH=SET-BOUND
+  F6.mjs want PUB=MAP-BOUND  DEF=MAP-BOUND  GEN=MAP-BOUND  BOTH=MAP-BOUND
+       got  PUB=MAP-BOUND  DEF=MAP-BOUND  GEN=MAP-BOUND  BOTH=MAP-BOUND
+
+─── §5(2): the side-effect assertion Theseus's addendum asked for ───────────────
+  git status --porcelain, filtered to files OUTSIDE this unit: 0 line(s)
+  NO published capture of any other unit was touched by this drive.
+
+  within this unit (expected: the captures this drive writes):
+    ?? docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs
+    ?? docs/research/unit-531conserve-2026-11-27/captures/

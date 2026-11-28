@@ -1,0 +1,37 @@
+unit-531 post-hoc — attributing P8's MISS, file by file
+  HEAD 349ab0ab6ca4 · clock 2026-11-27 17:25:24 PST
+  unit-529's pin 56b394c3d9d2 · POST-HOC: nothing here was pre-registered
+
+─── §1 the two corpora ──────────────────────────────────────────────────────────
+  corpus at 56b394c3d9d2:  861 files   (unit-529 published 861)
+  corpus at HEAD:              865 files
+  entered: 4 · left: 0
+    + docs/research/unit-529defaultparam-2026-11-27/arm-defaultparam.mjs
+    + docs/research/unit-529defaultparam-2026-11-27/posthoc-key-collision.mjs
+    + docs/research/unit-530compose-2026-11-27/arm-compose.mjs
+    + docs/research/unit-530compose-2026-11-27/posthoc-serieskey.mjs
+
+─── §2 what each entrant contributes (PUB instantiation, one file at a time) ────
+  file                                                          sites  excl  classes
+  d/r/unit-529defaultparam-2026-11-27/arm-defaultparam.mjs      0      1     —
+  d/r/unit-529defaultparam-2026-11-27/posthoc-key-collision.mjs 0      0     —
+  d/r/unit-530compose-2026-11-27/arm-compose.mjs                1      2     MAP-BOUND
+  d/r/unit-530compose-2026-11-27/posthoc-serieskey.mjs          0      0     —
+
+  Σ over entrants:   sites 1 · exclusions 3
+  observed drift:    population +1 · exclusions +3
+  ATTRIBUTED: FULLY — every unit of the drift is accounted to a named entering file, and nothing is left over.
+
+─── §3 the two controls P8 conjoined ───────────────────────────────────────────
+  P8a  DRIFT-INVARIANT: the off-by column, ten classes
+       10 of 10 classes have an IDENTICAL off-by against the published capture
+         SET-BOUND            capture +2   here +2
+         OTHER-BOUND          capture -2   here -2
+       FAILS: capture 2 (SET-BOUND, OTHER-BOUND) · here 2 (SET-BOUND, OTHER-BOUND)
+       verdict: EQUAL — the graded claim reproduces at a corpus four files larger.
+
+  P8b  DRIFT-SENSITIVE: the 40 absolute class counts
+       36 of 40 equal · moved: MAP-BOUND/PUB, MAP-BOUND/DEF, MAP-BOUND/GEN, MAP-BOUND/BOTH
+
+  P8 as registered demanded 48 of 48 across BOTH, so its MISS could not say which half moved.
+  Split, it says so exactly: the claim is invariant and the denominators are not.
