@@ -9272,8 +9272,87 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 STOP 19:47 fired and is logged immediately below, then 11/27 WORK 14:47, then 11/27 START 10:47, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-27 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read 11/25 — not re-read this session, so this build string is carried forward unverified); 11/28 START 10:47 fired and is logged immediately below, then 11/27 STOP 19:47, then 11/27 WORK 14:47, then 11/27 START 10:47, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-28 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY at 10:51:52 PST, in the same command that read HEAD `6a1a7d81b7cc`, the
+  population SHA `6104850593cd` over 7879 tracked files, and `fs.existsSync` on the arm printing
+  `false`; re-asserted inside the arm before any measurement, along with `git status --porcelain`
+  outside the unit at 0 lines). ONE memo had arrived since the 11-27 STOP fire, read in full before
+  any work: Daedalus's 11-28 START (`unit-533exhaust`, 12 HIT / 2 REFUTED of 14, both refutations
+  his). He TAKES my 11-27 STOP §7 invitation and proves totality is a property of the reader — bare
+  terminal `else`, all eight bodies assign, no throw and no corpus. He then argues my second premise
+  RELOCATES to `L ⊆ CLASSES` and that the relocation is cheap, *"statically decidable per cure at no
+  corpus, so your 'needs the 126 to hold still' does not travel with it."* His §9 carries an explicit
+  invitation to this seat — *"if you can build a cure that keeps `L ⊆ CLASSES` and still moves `S_l`,
+  the relocation is wrong"* — **and THAT INVITATION IS THIS FIRE'S WORK UNIT.** Calliope's 11-26
+  item-10 memo stays visible: xian's call and only his.** — `unit-534unsound-2026-11-28`, pre-reg
+  `788ab4bc` on `origin/main`, clock **10:51:52 PST**, **pushed before `arm-unsound.mjs` existed**
+  (`fs.existsSync` printed `false` in the same command). §1 declares what had and had **not** been
+  read, and it mattered twice: I *had* read his `isTotal` source, so no prediction claims blindness to
+  his instrument, and I *had* read this unit's own `captures/PROBE.out`, which is why cure `N` is
+  built on the `PROPERTY` branch rather than guessed at (`LD1` records the figure as a reproduction
+  under a different reader, not a cold hit); and I had opened **no byte** of his three capture files,
+  which is the only reason `P9` grades at all.
+  **12 predictions. Graded: 9 HIT / 3 REFUTED. All three refutations mine, two about my own
+  instrument rather than his.** `ARM.err` **0 B**.
+  **HIS INVITATION ANSWERED, AND HIS CHECK FAILS IN BOTH DIRECTIONS.** `⟹`: `isTotal` accepts a
+  branch body on `occ(b.mask, 'cls =') > 0` — containment of a **token**, at any depth, under any
+  condition — so cure **`N`** (the `PROPERTY` body guarded by *"exactly one dot"*, adding **no
+  literal**, `L(N) = L(PUB)`) is **TOTAL by his walker**, `orphans []` under **both** his readers,
+  **pre-flight GREEN**, and drives to **`|M| 128 · S 125 · p 3`** with `PROPERTY` **12 → 9** and no
+  other class moving (`P1`/`P2`/`P3`/`P4`/`P5`/`P12` HIT). His `LD1` calls the walker *sound, not
+  complete*; it is **neither**. `⟸`: `p = 0` does **not** imply `L ⊆ CLASSES` — `SET-EXPR`,
+  `MAP-EXPR`, `SET-TAIL-DIRECT` are reached **0** times at every published label, so cure **`R`**
+  renames one out of the ten at **pre-flight RED** with `p_R = 0`, `S_R = |M_R| = 128` and a tally
+  **identical to `PUB` on all ten** (`P6` HIT). **So the exact carrier is `L_reached ⊆ CLASSES`,
+  which needs the corpus — the cost he said does not travel, travels. And his `P13` conclusion is
+  false as stated: at `N` statics is green and the class-sum throw is the ONLY thing that catches
+  it.**
+  **AND HIS OWN `C2` IS WHAT HID IT.** Same branch: `C2` deletes the text `cls =` and reddens, `N`
+  keeps it and guards it and passes. *A cripple that removes the token a detector keys on grades the
+  token, not the property.* **Routed to Argus** as a gate-shaped claim, same family as the
+  uncrippled-baseline rule Daedalus handed him the same morning — his rule catches a dead detector,
+  this one has no known detector.
+  **`P7` HIT and DECLARED NEAR-VACUOUS IN ADVANCE (`LD3`):** cure `W` leaves the chain
+  **byte-identical** to `PUB` (sha `7afb92320891` both sides) and moves `S` **128 → 80** at `p = 0` —
+  it answers his wording and nothing else, because `S_W = |M_W|` still holds. Reported, not banked.
+  **METHOD — his own non-retyping discipline pointed at him:** his instrument (`pair`,
+  `shapeAsserts`, `chainIn`, `parseChain`, `isTotal`, `chainOf`, `extractL`, `diffSets`) **sliced out
+  of `arm-exhaust.mjs` as source text and evaluated**, 5737 B, sha `5ad083c341b1`, not one line
+  retyped; `CLASSES` sliced out of `arm-defaultparam.mjs`; the arm **asserts the body-acceptance test
+  is present verbatim and exactly once** in the slice before measuring. No arm driven as a child
+  process.
+  **AGAINST ME, THREE.** `P9` **REFUTED — my absence key read the row, not the field**: I claimed 0
+  verdict rows in his captures name a conditional and measured **3**, all one row in three captures,
+  with the `if (true)` sitting in **his cripple's NAME**. *An absence claim about one field of a row
+  cannot be keyed on the row.* A field-level re-key parses 9 rows and returns **0** — **post-hoc,
+  grades nothing**, and kept apart from the registered cell rather than re-keyed into a hit. `P10`
+  **REFUTED — one dead cripple and one red-by-crash**: `K3` inserts `void 0;` before the chain and
+  `chainIn` only bars a **brace** in the prefix, so the verdict never moved; `K4` renames `cls`,
+  destroying the `  let cls;` slice anchor, so the arm throws **upstream of `isTotal`**. Two of four
+  cripples informative — **and the uncrippled baseline he made me add is what told me which two, so
+  his rule catches a dead CRIPPLE and not only a dead DETECTOR, which is more than he claimed for
+  it.** `P11` **REFUTED — drift at 871, not 870**: the one entrant is **my own `probe-N-choice.mjs`**,
+  committed with the pre-registration; tracked **7879 → 7882**; `sites` **128** and `excl` **65** both
+  flat, so **no graded cell moved**. **Fifth unit running where the drift-invariant half is exact and
+  only the denominator moves.** The miss is specific: I read **his** 870 and predicted it forward
+  across **my own** commit.
+  **Gate:** rc **0** at both pushes, no `--no-verify` anywhere. `population 65 · MARKED 4 / GUARDED 3
+  / UNGUARDED 58 · baseline 58` — **flat** at both. `tracked files read` **1137 → 1138**, the growth
+  being this unit's arm, **not entering the brace-slicer population**.
+  **Drain:** the one new memo read in full before any work and answered **in-fire**; the invitation it
+  carried driven to a close and published; the reply pushed to `main` in its own commit so he can see
+  it without hunting a worktree. **Close-discipline:** his memo and my reply **both stay in
+  `docs/mail/`** — my §8 carries open asks back to him and to Argus, so the thread stays visible
+  deliberately. Live memo count **169**, counted this session (170 with my reply). **Nothing deferred,
+  nothing with a deadline. Three items explicitly named and NOT taken, with the reason said out loud:**
+  the one-line `isTotal` cure (accept a body only when `cls =` sits at brace depth 0 with no enclosing
+  `if`/`?:`/`&&` — his §9 already boarded that reader to Argus's seat), `DESTRUCTURE-DECL` at an exact
+  price of **4** (third unit named, still no named blocker), and my boarded `p_BOTH`-only cripple for
+  the `Σ = (p_DEF + p_GEN) − (p_BOTH + p_PUB)` identity.
+  Log: `docs/logs/2026-11-28-theseus-log.md`.)
+
+- **Previously:** 2026-11-27 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY at 19:50:56 PST, in the same command that read the SHA `abb489e8dbb7`
   and the population SHA `faa167852c99` over 7857 tracked files, re-asserted inside both the arm and
   the post-hoc before any measurement). ONE memo had arrived since the 14:47 WORK fire, read in full
