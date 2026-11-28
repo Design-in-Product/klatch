@@ -1,0 +1,77 @@
+unit-533exhaust — arm · HEAD 559a5c885f90 · prereg 559a5c88 · 2026-11-28 09:29:18 PST
+sliced region 7893 B (sha 37455314472e) · CLASSES 10 · corpus 870 files
+
+§A  STATIC — totality and enumeration, per instantiation
+  label  region B  TOTAL  assign  |L|  nonLit  orphans
+  PUB    938       yes    11      10   0       []
+  DEF    938       yes    11      10   0       []
+  GEN    1030      yes    11      10   0       []
+  BOTH   1030      yes    11      10   0       []
+  DSTAR  981       yes    12      11   0       [PARAM-BOUND]
+  X      982       yes    11      12   1       [(), SET-BOUND-SEEDED]
+  extras (in CLASSES, not in L) at PUB: []  (LD3: reported, not graded)
+
+§B  K-naive vs K-wide — the same question asked by two readers
+  label  naive orphans       wide orphans
+  PUB    []                  []
+  DEF    []                  []
+  GEN    []                  []
+  BOTH   []                  []
+  DSTAR  [PARAM-BOUND]       [PARAM-BOUND]
+  X      []                  [(), SET-BOUND-SEEDED]
+
+§C  CRIPPLES — does the walker actually go red?
+  RED    C1 terminal bare else DELETED              no terminal bare else
+  RED    C2 a branch body left non-assigning        body 5: body 5 assigns nothing
+  RED    C3 terminal else -> else if (true)         no terminal bare else
+
+§D  DYNAMIC — armA on the real corpus, S vs |M|
+  label  S     |M|   p    excl  outside-the-ten
+  PUB    128   128   0    65    []
+  DEF    128   128   0    65    []
+  GEN    128   128   0    65    []
+  BOTH   128   128   0    65    []
+  DSTAR  126   128   2    65    [PARAM-BOUND]
+  X      103   128   25   65    [SET-BOUND-SEEDED]
+
+§E  PREDICTIONS
+  HIT     P1    shape assertions on the published region
+          switch 0 · return 0 · cls ids 12 = assigned 11 + declared 1
+  HIT     P2    the published chain is TOTAL
+          true (bare else · 8 bodies)
+  HIT     P3    11 assignments, 10 distinct, duplicate = RECEIVER-UNKEYED
+          assignments 11 · distinct 10 · dup 1
+  HIT     P4    L_wide(PUB) set-equal to CLASSES
+          orphans [] · extras [] · |L| 10 vs |CLASSES| 10
+  HIT     P5    totality is not the carrier: all six TOTAL
+          PUB:T DEF:T GEN:T BOTH:T DSTAR:T X:T
+  REFUTED P6    enumeration is the carrier: orphans {} at the four, named at D*/X
+          PUB:[] DEF:[] GEN:[] BOTH:[] DSTAR:[PARAM-BOUND] X:[(),SET-BOUND-SEEDED]
+  HIT     P7    matched negative: G edits keyIndirect 3x and orphans nothing
+          S2=1 S3=1 S4=1 · orphans []
+  REFUTED P8    AGAINST MY OWN INSTRUMENT: K-naive catches D*, misses X
+          naive D* [PARAM-BOUND] · naive X [] · wide X [(),SET-BOUND-SEEDED]
+  HIT     P9    non-literal RHS flag fires only under X
+          PUB:0 DEF:0 GEN:0 BOTH:0 DSTAR:0 X:1
+  HIT     P10   cripple C1 terminal bare else DELETED reports NOT-TOTAL
+          total=false (no terminal bare else)
+  HIT     P11   cripple C2 a branch body left non-assigning reports NOT-TOTAL
+          total=false (body 5: body 5 assigns nothing)
+  HIT     P12   cripple C3 terminal else -> else if (true) reports NOT-TOTAL
+          total=false (no terminal bare else)
+  HIT     P13   THE PAYLOAD: statics predicts the class-sum identity at all six
+          PUB: static orphans 0 / dynamic p 0 · DEF: static orphans 0 / dynamic p 0 · GEN: static orphans 0 / dynamic p 0 · BOTH: static orphans 0 / dynamic p 0 · DSTAR: static orphans 1 / dynamic p 2 · X: static orphans 2 / dynamic p 25
+  HIT     P14   AGAINST ME: p_X reproduces Theseus's 25
+          p_X 25
+  12 HIT / 2 REFUTED of 14
+
+§F  CONTROLS, split drift-invariant / drift-sensitive
+  OK    invariant sliced region bytes           got 7893    want 7893
+  OK    invariant CLASSES.length                got 10      want 10
+  OK    invariant G substitutions               got 4       want 4
+  OK    invariant D* substitutions              got 2       want 2
+  MOVD  sensitive corpus files                  got 870     want 867
+  MOVD  sensitive sites (PUB)                   got 128     want 127
+  MOVD  sensitive excludedDirectTails (PUB)     got 65      want 64
+
+§G  mitigation — git status --porcelain: 5 line(s), 0 outside this unit
