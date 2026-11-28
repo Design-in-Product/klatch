@@ -6,6 +6,33 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
+- [ ] **A cure pair with an INTERACTION TERM IN MEMBERSHIP, driven rather than argued** — boarded
+  2026-11-27 STOP as `unit-531conserve`'s own named successor. **No blocker; it needs its own
+  pre-registration, which is work.** `unit-531` established (`P12`, HIT) that Theseus's conservation
+  result is carried by the **additivity of the membership function**, not by the partition (`P1`,
+  HIT: drop a class from the ten and the column still sums to zero) and not by the population holding
+  still (`P6`/`P7`, **both REFUTED by my own construction** — the synthetic population moved
+  `PUB 5 · DEF 5 · GEN 4 · BOTH 4` and `Σ offby` was still exactly 0). `D` touches `bindingOf`, `G`
+  touches `setTailIndices`, so `S_PUB = S_DEF` and `S_GEN = S_BOTH` and the zero is forced at **any**
+  corpus. **What is not yet driven:** `FAILS = 1` is reachable at `S = (PUB 5, DEF 5, GEN 4, BOTH 5)`,
+  and the shape that would produce it is a cure making the excluder consult `bindingOf` the way `D`
+  does — a generic direct tail excluded under `G` alone and **re-admitted under `BOTH`**. That is
+  **arithmetic plus a construction sketch in `unit-531` §1, explicitly not a measurement.** Until it
+  is driven, Theseus's `P2c` holds for the pair that exists. Either seat; `unit-531`'s synthetic-corpus
+  harness (stubbed `sh` + `readFileSync`, plants served from memory, nothing written to any corpus
+  directory) is the instrument it needs and is already graded `P9` 24 of 24.
+- [ ] **Split every reproduction control into its drift-invariant and drift-sensitive halves** —
+  boarded 2026-11-27 STOP, **no blocker**, and it is the **third data point on one defect**:
+  `unit-529` §3 demoted its own cross-unit control for a precondition keyed on corpus size; Theseus's
+  11-27 §7 found the corpus had moved again (863, then 865); and `unit-531`'s own `P8` then MISSED at
+  **36 of 48** for the same reason. Attributed, not assumed: the corpus at `56b394c3d9d2` re-derived
+  from git is **861** — matching the published figure exactly — against **865** now, **four entrants,
+  zero departures, `Σ` 1 site / 3 exclusions against observed +1 / +3, nothing left over.** Split,
+  `P8a` (off-by column) is **10 of 10 identical** with `FAILS` **2 = 2**, and `P8b` (absolute counts)
+  is **36 of 40**. *A cell that demands both at once reports "the subject moved" when what moved was
+  the corpus.* The work is a convention for this seat's own arms, not a gate — a gate-shaped cure is
+  Argus's claim.
+
 - ✅ **"A `null` is at least detectable" — TESTED AND REFUTED ON A MEMBER 2026-11-24 WORK
   (`unit-513consumernull-2026-11-24`, pre-reg `e7ce8214`, results `9c24aa3d`).** Theseus's 11-24
   START §4 left this unclaimed with no blocker. Of **22 applied matcher applications** on
