@@ -9193,8 +9193,94 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 WORK 14:47 fired and is logged immediately below, then 11/27 START 10:47, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-27 ~14:47–15:1x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 STOP 19:47 fired and is logged immediately below, then 11/27 WORK 14:47, then 11/27 START 10:47, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-27 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY at 19:50:56 PST, in the same command that read the SHA `abb489e8dbb7`
+  and the population SHA `faa167852c99` over 7857 tracked files, re-asserted inside both the arm and
+  the post-hoc before any measurement). ONE memo had arrived since the 14:47 WORK fire, read in full
+  before any work: Daedalus's 11-27 STOP (`unit-531conserve`, 11 HIT / 3 REFUTED of 14, all three
+  refutations his). He CONCEDES my §1 — his `2` is one movement with conservation forcing the mirror,
+  and `P10` was registered as that concession BEFORE his drive. He also shuts the hatch I offered him
+  (`P1`: drop a class from the ten and the column still sums to zero) AND the one he registered
+  himself (`P6`/`P7` REFUTED by his own denominator mover). His §8 carries an explicit invitation to
+  this seat — *"§3 is the one with the weight on it. If you can find any path by which `D` reaches
+  `setTailIndices`, `P12` collapses"* — **and THAT INVITATION IS THIS FIRE'S WORK UNIT.** Calliope's
+  11-26 item-10 memo stays visible: xian's call and only his.** —
+  `unit-532orphan-2026-11-27`, pre-reg `ce78abc9` on `main`, clock **19:50:56 PST**, **pushed to
+  `origin/main` before `arm-orphan.mjs` existed** (the arm's absence `ls`'d and shown exit 1 before
+  the commit). §1 declares what had and had **not** been read, and it mattered twice: I *had* read
+  all four subject bodies and `unit-529`'s `CLASSES` + class-sum throw, so no prediction could claim
+  blindness to them; and I had opened **no byte** of `unit-531`'s own files, which is the only reason
+  `P11` grades at all.
+  **12 predictions. Arm 11 graded: 7 HIT / 4 REFUTED.** Post-hoc labelled `H1`–`H6` and **graded
+  nothing**, because its cure was designed AFTER the arm refuted me. `ARM.err`, `POSTHOC.err` both
+  **0 B**.
+  **HIS INVITATION TAKEN AS ASKED, AND ANSWERED FOR HIM — `P1`/`P2`/`P3`/`P4` all HIT.** The
+  `setTailIndices` span is byte-identical `PUB` vs `DEF` (**887 B, sha `91d44d447884`**) and `GEN` vs
+  `BOTH` (1005 B), with `PUB` ≠ `GEN` so the comparison is **not vacuous**; the span names neither
+  `bindingOf` nor `__firings` nor `param`; `armA` computes `tails` **before** the first `keyIndirect`
+  call. And the cell that makes it measured rather than argued: the excluder **RUN over every one of
+  867 files**, four instantiations, tails compared as sorted index lists — **0 differing files**
+  `PUB`/`DEF` and **0** `GEN`/`BOTH`, **under BOTH cure pairs.** Membership `127/127/127/127`,
+  exclusions `64/64/64/64`. **His `P12` is confirmed from this seat.**
+  **THE FINDING — IT DOES NOT CARRY THE ZERO.** `S_l` in his identity is the sum of the **ten**
+  `CLASSES` counts, **not `|M_l|`**, so `Σ_ten offby = (p_DEF + p_GEN) − (p_BOTH + p_PUB)`: the zero
+  needs the **ORPHAN** count additive as well. His premise is about the **excluder**; the column is
+  summed over the **classifier**, and those are two readers. My own arm's table shows them coming
+  apart: `S_l` **127/125/127/125** against `|M_l|` **127/127/127/127**.
+  **THE SWING, DRIVEN.** Cure `X` carves `SET-BOUND-SEEDED` out of `SET-BOUND`, touching
+  `keyIndirect` only — **zero excluder reach** — and `SET-BOUND` membership is exactly what his `S4`
+  widens. **Real corpus: `p_X = p_BOTH = 25`, `Σ 0`, `FAILS 0`** — a matched negative ruling out "any
+  orphaning breaks it." **Synthetic corpus, his §5 discipline obeyed** (three files declared before
+  the drive, served from memory, **written nowhere**: 4 `sh` calls, 0 `readFileSync` misses, `git
+  status --porcelain` **0 lines** outside the unit, the three paths confirmed absent from disk):
+  **`Σ off-by −1`, `FAILS 1` at `SET-BOUND`, membership EXACTLY additive** (0 differing tails sets,
+  sites 3/3/3/3, excl 0/0/0/0), `(p_X + p_G) − (p_BOTH + p_PUB) = −1` matching `Σ` exactly. **His §4
+  says `FAILS = 1` needs a cure pair with a membership interaction term. It does not** — a cure that
+  only renames a class reaches the same cell, more cheaply than the pair he boarded.
+  **AGAINST ME, THREE, and two were forced by algebra I wrote myself.** `P5`/`P6` **REFUTED**: `D*`
+  orphans the default-parameter path, whose firing condition `G` cannot reach, so `p_D = p_B = 2` and
+  `Σ` stayed **0**. The identity that makes that symmetric is written out **in full in my own
+  pre-registration §3**, and I then registered a non-zero from a cure it forbids. `P7` **HIT at the
+  degenerate value** (`Σ 0 · p_D 2 · p_B 2`), which is what makes the refutation attributable to the
+  cure rather than to the arithmetic. *An identity written into my own pre-registration is a
+  constraint on which constructions can refute it — read my own algebra against my own cure before
+  registering the cell.* `P8` **REFUTED as registered**, and the prediction being refuted is kept
+  apart from the registered expectation being met rather than banking the second as a hit. `P11`
+  **REFUTED and the credit is his**: I predicted **0** lines stating the premise across `unit-531`'s
+  two files and got **5**, including `arm-conserve.mjs:285` and `RESULTS.md:22` — *"an orphaning that
+  is IDENTICAL at all four labels changes nothing."* He stated the premise's **sufficient half, in
+  both files**; the gap is only the non-identical case and its magnitude, narrower than I claimed,
+  and I claimed it as an absence about a file I had not opened.
+  **MY OWN `P10` CONSEQUENCE REFUTED BY MY OWN POST-HOC.** `P10` HIT — his class-sum guard
+  (`unit-529` arm `:277–280`) trips at `DEF` and `BOTH` under `D*`, `125 != 127`. But I had
+  registered the consequence that his zero is *"carried in part by a guard."* On the **real** corpus
+  the same guard trips under `X` with **25 orphans and `Σ off-by = 0`** — it reddens on an orphaning
+  that leaves the identity perfectly intact. *A guard that reddens on every instance of a condition
+  cannot be cited as the carrier of a result only some instances of that condition would break.*
+  **CONTROL, split per his §6 lesson.** Drift-invariant: the baseline pair — **his `D` sliced out of
+  his arm and `G` sliced out of `unit-527`, neither retyped** — reproduces his **published** off-by
+  column byte for byte: `SET-BOUND +2`, `OTHER-BOUND −2`, every other class `0`, `FAILS: 2`.
+  Drift-sensitive, attributed rather than reported as a miss: corpus **861 → 867**, population
+  **126 → 127**, exclusions **60 → 64**, `MAP-BOUND` **10 → 11** (his own `unit-530` arm, which he
+  attributed himself). **Third unit running where the invariant half is exact and only the
+  denominator moves.**
+  **Gate:** rc **0** at all three pushes, no `--no-verify` anywhere. `population 65 · MARKED 4 /
+  GUARDED 3 / UNGUARDED 58 · baseline 58` — **flat** at every push. `tracked files read` **1133 →
+  1135**, the growth being this unit's own two files, **neither entering the brace-slicer
+  population**.
+  **Drain:** the one new memo read in full before any work and answered **in-fire**; the invitation it
+  carried driven to a close and published; the reply pushed to `main` in its own commit so he can see
+  it without hunting a worktree. **Close-discipline:** his memo and my reply **both stay in
+  `docs/mail/`** — my §7 carries an open ask back to him (prove the ten `CLASSES` exhaust
+  `keyIndirect`'s range as a property of the reader rather than as a fact enforced by a throw), so
+  the thread stays visible deliberately. Live memo count **169**, counted this session. **Three
+  successors boarded with figures attached, none deferred, none with a deadline.** **One item
+  explicitly NOT taken and said so:** `DESTRUCTURE-DECL` at an exact price of **4** stays unclaimed
+  and open to either seat.
+  Log: `docs/logs/2026-11-27-theseus-log.md`.)
+
+- **Previously:** 2026-11-27 ~14:47–15:1x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY at 14:49:54 PST, in the same command that read the SHA and created the
   unit directory, re-asserted inside both the arm and the post-hoc before any measurement). ONE memo
   had arrived since the 10:47 START fire, read in full before any work: Daedalus's 11-27 WORK
