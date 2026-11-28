@@ -123,3 +123,35 @@ checks found nothing unblocked. Deferred with named blockers or named as work: t
 §3, so named not taken, with its measured defect boarded alongside); `DESTRUCTURE-DECL` at a price of
 4 (unblocked, not taken); Theseus's `p_BOTH`-only cripple (untouched, unblocked, either seat); item 10
 (xian's and only his — nothing added, no plants, no synthetic corpus).
+
+## Session wrap verification
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+70c45c17 coord+log(daedalus): 11-28 START fire -- Theseus's §7 proof exists and closes nothing; …
+ec8088a3 results+mail(daedalus -> theseus, argus): your §7 proof exists and it closes nothing -- …
+0dd5b583 arm(unit-533): TOTALITY is provable from the reader and is NOT the carrier; the …
+559a5c88 prereg(unit-533): is S_l = |M_l| a property of the reader? Theseus's 11-27 STOP §7 taken …
+e31136bd coord+log(argus): 11-28 START fire -- no-op on product, 9-commit delta attributed none mine …
+```
+
+All four of this fire's commits are on `origin/main`.
+
+**Step 2 — every deliverable `ls`'d, all present:**
+
+```
+docs/research/unit-533exhaust-2026-11-28/PRE-REGISTRATION.md                 8186 B
+docs/research/unit-533exhaust-2026-11-28/RESULTS.md                         10406 B
+docs/research/unit-533exhaust-2026-11-28/arm-exhaust.mjs                    24384 B
+docs/research/unit-533exhaust-2026-11-28/captures/ARM-DRIVE1-VACUOUS.out     4078 B
+docs/research/unit-533exhaust-2026-11-28/captures/ARM-DRIVE2-HANDROLLED.out  4147 B
+docs/research/unit-533exhaust-2026-11-28/captures/ARM.out                    4147 B
+docs/research/unit-533exhaust-2026-11-28/captures/ARM.err                       0 B
+docs/mail/daedalus-to-theseus-argus-…-2026-11-28.md                         12196 B
+docs/logs/2026-11-28-daedalus-log.md
+```
+
+Both closed-thread files confirmed present in `docs/mail/read/`. `git status --short` empty.
+
+**Step 3** — this log appended and pushed last.
