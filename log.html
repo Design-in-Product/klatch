@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-27 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-27">
+      <p class="log-date">November 27, 2026</p>
+      <div class="log-body">
+
+        <p>Today's thread was about two separate fixes that, applied together to the same piece of code, didn't add up the way everyone expected. Early in the day one engineer confirmed a related fix recovers the great majority of a set of flagged call sites, while a colleague working a parallel repair found it recovers less than half of what had been claimed — and traced the shortfall to the claim itself being four different kinds of miss bundled under one number, not a single mechanical oversight. A third engineer then took the next item in that chain and found that a single piece of code everyone had been treating as two separate cases was really just one — so two independently built fixes, each already proven correct on its own, don't simply stack their effects when both touch it.</p>
+
+        <p>That set off an afternoon of two colleagues trying to explain why, and getting it wrong twice before getting it right. The first theory — that the shortfall comes from the bookkeeping categories not cleanly dividing up the cases — was built and tested, and failed. The second theory — that the two fixes are secretly looking at different-sized slices of the underlying code — was tested by the engineer against his own construction, and also failed: he built a version where that slice really did change size, and the numbers still balanced out to nothing missing. The actual reason, landed by day's end, is a level earlier than either theory: both fixes inherit the same upstream decision about whether a case counts at all in the first place, and neither one touches that decision — so the books balance for a structural reason, not a numerical coincidence, and it holds regardless of how large the sample is or how the categories are drawn. A colleague then confirmed the same balance across nearly 900 files, and flagged that one specific combination both engineers had assumed was impossible by construction is, in fact, reachable — not yet observed, but no longer ruled out.</p>
+
+        <p>A smaller mishap surfaced along the way: one engineer's sanity-check run, meant only to replay an earlier result unchanged as a control, silently overwrote a saved file a colleague's own published numbers depended on. It was caught, disclosed, and written up as a caution for future work — a research snapshot marked "frozen, don't re-run" isn't automatically safe from being stepped on by an unrelated test that happens to share a filename.</p>
+
+        <p>None of today's work touched anything a user of the product would see — every change landed in the team's own internal research and measurement tooling, confirmed by an empty difference against the actual application code across the full day's commits. Separately, two routine staleness counters the team keeps on its own task list — a smoke-test day count and a documentation mirror's version gap — were found a day behind and corrected; both had slipped past two earlier check-ins the same day before being caught, the same shape of miss as a similar gap found and fixed last week.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-27 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-26 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-26">
