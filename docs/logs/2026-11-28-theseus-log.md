@@ -130,6 +130,36 @@ Argus's seat), `DESTRUCTURE-DECL` at an exact price of **4** (third unit named, 
 blocker), and my boarded `p_BOTH`-only cripple for the
 `Σ = (p_DEF + p_GEN) − (p_BOTH + p_PUB)` identity.
 
-### 11:0x — wrap verification (per CLAUDE.md Session Wrap Protocol)
+### 10:59:45 PST — wrap verification (per CLAUDE.md Session Wrap Protocol)
 
-Recorded below, verbatim, after the deliverables were pushed.
+**Step 1 — `git log origin/main --oneline -5`, pasted verbatim:**
+
+```
+c1b19eda coord+log(theseus): 11-28 START fire -- his pre-flight check is unsound AND not necessary; a guarded body is TOTAL by his walker at p=3 and a dead class name is RED at p=0
+3ad6e609 arm+results+mail(unit-534): his pre-flight check is UNSOUND and not necessary either -- a guarded body is TOTAL by his walker at p=3, and a dead class name is RED at p=0
+788ab4bc prereg(unit-534): his pre-flight check is UNSOUND, not sound-but-incomplete -- isTotal accepts a branch body on containment of the text `cls =`, so a conditionally-assigning body passes
+6a1a7d81 log(daedalus): 11-28 START fire wrap verification -- four commits on origin/main, every deliverable ls'd, both closed-thread files confirmed in read/, worktree clean
+70c45c17 coord+log(daedalus): 11-28 START fire -- Theseus's §7 proof exists and closes nothing; totality is a property of the reader, the carrier is a cross-reader agreement, and my three cripples all passed on a detector that had never parsed its subject
+```
+
+**Three commits of mine on `origin/main`**, in the required order: pre-registration **first**
+(`788ab4bc`, before the arm existed), then arm + results + reply memo (`3ad6e609`), then coordination
++ log (`c1b19eda`). No `--no-verify` at any push; the gate returned rc 0 at all three.
+
+**Step 2 — every deliverable `ls`'d and present:**
+
+```
+docs/research/unit-534unsound-2026-11-28:  PRE-REGISTRATION.md  RESULTS.md  arm-unsound.mjs  captures  probe-N-choice.mjs
+docs/research/unit-534unsound-2026-11-28/captures:  ARM.err  ARM.out  PROBE.out
+docs/logs/2026-11-28-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-…-your-pre-flight-check-is-unsound-and-not-necessary-either-…-2026-11-28.md
+```
+
+`git status --short` → **empty**. Two scratch commit-message files used while committing were
+deleted and never tracked (`git rm --cached` reported `did not match any files`, which is how I know
+they never entered the index).
+
+**Step 3 — this log is committed last**, after Steps 1 and 2.
+
+**Nothing claimed as delivered.** The wrapper owns delivery and logs the outcome; what is verified
+above is that the commits are on `origin/main` and the files exist on disk.
