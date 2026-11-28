@@ -1,0 +1,85 @@
+═══ unit-532orphan — post-hoc: an orphan count with an INTERACTION term ═══
+SHA ce78abc99545   clock 2026-11-27 19:58:51 PST
+SLICED 7893 B sha 37455314472e   GENERIC_SRC "new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\("
+cure X: X  keyIndirect: a SET-BOUND whose binding is SEEDED (non-empty argument) gets its own class
+   FROM "cls = 'SET-BOUND'; argSpan = b.rhs;"
+   TO   "cls = b.rhs.includes('()') ? 'SET-BOUND' : 'SET-BOUND-SEEDED'; argSpan = b.rhs;"
+
+H1/H2 — the REAL pinned corpus
+
+══ H1/H2  real corpus ══  corpus 867 files
+  class                PUB     X       G       BOTH    additive measured off-by
+  SET-BOUND            36      11      40      15      15       15       +0
+  SET-EXPR             0       0       0       0       0        0        +0
+  MAP-BOUND            11      11      11      11      11       11       +0
+  MAP-EXPR             0       0       0       0       0        0        +0
+  OTHER-BOUND          34      34      30      30      30       30       +0
+  UNRESOLVED           7       7       7       7       7        7        +0
+  PROPERTY             11      11      11      11      11       11       +0
+  CALL                 21      21      21      21      21       21       +0
+  RECEIVER-UNKEYED     7       7       7       7       7        7        +0
+  SET-TAIL-DIRECT      0       0       0       0       0        0        +0
+  Sigma off-by over the ten +0      FAILS: 0
+  S_l  (sum of the ten) 127     102     127     102     
+  |M_l| (sites.length) 127     127     127     127     
+  excludedDirectTails  64      64      64      64      
+  orphaned at PUB        none
+  orphaned at DEF        SET-BOUND-SEEDED=25
+  orphaned at GEN        none
+  orphaned at BOTH       SET-BOUND-SEEDED=25
+  membership EXACTLY additive: true   (tails differing: PUB/X 0 · G/BOTH 0 of 867)
+  p_PUB 0 · p_X 25 · p_G 0 · p_BOTH 25
+  identity check: (p_X + p_G) - (p_BOTH + p_PUB) = 0   vs Sigma off-by 0   MATCH true
+  unit-529's class-sum guard would THROW at: DEF, BOTH
+
+H3/H4/H5 — a corpus served from MEMORY. Each planted file, declared before the drive:
+  docs/research/unit-532orphan-2026-11-27/synthetic/f1.mts
+      const s = new Set<string>(xs);
+      if (s.size === 1) go();
+  docs/research/unit-532orphan-2026-11-27/synthetic/f2.mts
+      const t = new Set(ys);
+      if (t.size === 1) go();
+  docs/research/unit-532orphan-2026-11-27/synthetic/f3.mts
+      const u = new Set();
+      if (u.size === 1) go();
+
+══ H3/H4  synthetic corpus ══  corpus 3 files
+  class                PUB     X       G       BOTH    additive measured off-by
+  SET-BOUND            2       1       3       1       2        1        -1
+  SET-EXPR             0       0       0       0       0        0        +0
+  MAP-BOUND            0       0       0       0       0        0        +0
+  MAP-EXPR             0       0       0       0       0        0        +0
+  OTHER-BOUND          1       1       0       0       0        0        +0
+  UNRESOLVED           0       0       0       0       0        0        +0
+  PROPERTY             0       0       0       0       0        0        +0
+  CALL                 0       0       0       0       0        0        +0
+  RECEIVER-UNKEYED     0       0       0       0       0        0        +0
+  SET-TAIL-DIRECT      0       0       0       0       0        0        +0
+  Sigma off-by over the ten -1      FAILS: 1  at SET-BOUND -1
+  S_l  (sum of the ten) 3       2       3       1       
+  |M_l| (sites.length) 3       3       3       3       
+  excludedDirectTails  0       0       0       0       
+  orphaned at PUB        none
+  orphaned at DEF        SET-BOUND-SEEDED=1
+  orphaned at GEN        none
+  orphaned at BOTH       SET-BOUND-SEEDED=2
+  membership EXACTLY additive: true   (tails differing: PUB/X 0 · G/BOTH 0 of 3)
+  p_PUB 0 · p_X 1 · p_G 0 · p_BOTH 2
+  identity check: (p_X + p_G) - (p_BOTH + p_PUB) = -1   vs Sigma off-by -1   MATCH true
+  unit-529's class-sum guard would THROW at: DEF, BOTH
+
+H5  sh calls in the synthetic drive: 4 (4 expected, one per instantiation) · readFileSync misses: 0
+H5  git status --porcelain outside this unit: 0 line(s)
+H5  the three synthetic paths exist on disk? none — written nowhere, as declared
+
+─── H6: what this settles ─────────────────────────────────────────────────────
+  real corpus     : Sigma +0  FAILS 0  membership additive true  guard throws at [DEF, BOTH]
+  synthetic corpus: Sigma -1  FAILS 1  membership additive true  guard throws at [DEF, BOTH]
+
+  Daedalus's P12 says membership is a function of cure G alone, and the arm confirms
+  that over 867 files with 0 differing tails sets. His §3 then concludes Sigma off-by = 0
+  "at any corpus, at any denominator". The step from M_PUB = M_DEF to S_PUB = S_DEF is
+  where a second premise sits, and the cell above is the measurement of whether it is
+  load-bearing: membership EXACTLY additive, and Sigma off-by not zero.
+
+POSTHOC DONE   2026-11-27 19:58:53 PST

@@ -1,0 +1,137 @@
+═══ unit-532orphan — arm ═══
+SHA ce78abc99545   clock 2026-11-27 19:56:56 PST   pre-reg commit ce78abc9
+product tree clean: git diff --stat HEAD -- packages/ scripts/ is EMPTY (re-asserted here)
+SLICED 7893 B  sha 37455314472e
+G region 1112 B -> 4 SUBS   D region 674 B -> 1 SUB
+GENERIC_SRC as instantiated: "new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\("
+PARAM_SRC   as instantiated: "[(,]\\s*NAME\\s*(?::[^=,)\\n]*)?=\\s*(.*)$"
+corpus: 867 files
+
+─── P1: is the excluder's TEXT moved by cure D? ───────────────────────────────
+  PUB    setTailIndices span 887    B  sha 91d44d447884
+  DEF    setTailIndices span 887    B  sha 91d44d447884
+  GEN    setTailIndices span 1005   B  sha 887b253805e8
+  BOTH   setTailIndices span 1005   B  sha 887b253805e8
+  HIT      P1  setTailIndices text identical PUB=DEF and GEN=BOTH under the REAL pair
+            PUB==DEF true · GEN==BOTH true · PUB==GEN false (G DOES move it, as it must)
+
+─── P4: is there a DYNAMIC path? the span, scanned ────────────────────────────
+  ok    no call to bindingOf in the excluder
+  ok    no reference to __firings in the excluder
+  ok    no reference to `param` in the excluder
+  ok    excluder span byte-identical PUB vs DEF
+  ok    armA computes tails BEFORE the first keyIndirect call
+  HIT      P4  no dynamic path from D to setTailIndices
+            5 of 5 sub-checks hold
+
+─── P2: the excluder RUN over every file, all four instantiations ─────────────
+  real pair : files where tails differ — PUB vs DEF 0 · GEN vs BOTH 0   of 867
+  D* pair   : files where tails differ — PUB vs DEF 0 · GEN vs BOTH 0   of 867
+  HIT      P2  tails sets identical PUB=DEF and GEN=BOTH, every file, REAL pair
+            0 expected; got 0 and 0 over 867 files
+
+─── P3: membership ────────────────────────────────────────────────────────────
+  BASE  sites 127     127     127     127     
+  BASE  excl  64      64      64      64            (PUB  DEF  GEN  BOTH)
+  STAR  sites 127     127     127     127     
+  STAR  excl  64      64      64      64            (PUB  DEF  GEN  BOTH)
+  HIT      P3  membership identical PUB=DEF and GEN=BOTH, REAL pair
+            PUB 127 = DEF 127 · GEN 127 = BOTH 127
+
+─── P12(a)/P5/P6/P7: the off-by column, real pair then D* pair ────────────────
+  ── BASE ──   class                additive  measured  off-by
+                  SET-BOUND            40        42        +2
+                  SET-EXPR             0         0         +0
+                  MAP-BOUND            11        11        +0
+                  MAP-EXPR             0         0         +0
+                  OTHER-BOUND          32        30        -2
+                  UNRESOLVED           5         5         +0
+                  PROPERTY             11        11        +0
+                  CALL                 21        21        +0
+                  RECEIVER-UNKEYED     7         7         +0
+                  SET-TAIL-DIRECT      0         0         +0
+                  Sigma off-by over the ten: +0    FAILS: 2
+                  S_l (sum of the ten)     : 127     127     127     127     
+                  |M_l| (sites.length)     : 127     127     127     127     
+                  orphaned at PUB  : none
+                  orphaned at DEF  : none
+                  orphaned at GEN  : none
+                  orphaned at BOTH : none
+
+  ── STAR ──   class                additive  measured  off-by
+                  SET-BOUND            40        40        +0
+                  SET-EXPR             0         0         +0
+                  MAP-BOUND            11        11        +0
+                  MAP-EXPR             0         0         +0
+                  OTHER-BOUND          30        30        +0
+                  UNRESOLVED           5         5         +0
+                  PROPERTY             11        11        +0
+                  CALL                 21        21        +0
+                  RECEIVER-UNKEYED     7         7         +0
+                  SET-TAIL-DIRECT      0         0         +0
+                  Sigma off-by over the ten: +0    FAILS: 0
+                  S_l (sum of the ten)     : 127     125     127     125     
+                  |M_l| (sites.length)     : 127     127     127     127     
+                  orphaned at PUB  : none
+                  orphaned at DEF  : PARAM-BOUND=2
+                  orphaned at GEN  : none
+                  orphaned at BOTH : PARAM-BOUND=2
+
+  HIT      P12(a) baseline off-by column reproduces unit-529 published (SET-BOUND +2, OTHER-BOUND -2, rest 0)
+            FAILS 2 (published 2) · column match true
+  REFUTED  P5  D* pair: Sigma off-by over the ten != 0, at exactly additive membership
+            Sigma 0 · membership additive true (PUB 127 = DEF 127, GEN 127 = BOTH 127)
+  REFUTED  P6  D* pair: FAILS = 1, and the one class is UNRESOLVED
+            FAILS 0
+  HIT      P7  magnitude equals p_D - p_B
+            Sigma 0 · p_D 2 · p_B 2 · p_D - p_B 0 · p_PUB 0 · p_GEN 0
+  REFUTED  P8  on the REAL pinned corpus, p_D != p_B  (registered expectation: EQUAL, i.e. REFUTED)
+            p_D 2 · p_B 2
+
+─── P10: unit-529 arm :277-280, the class-sum guard, run over the D* tables ───
+  the guard, as it stands in his arm (188 B):
+        const sum = CLASSES.reduce((a, k) => a + (CLS[l][k] || 0), 0);
+        if (sum !== RUN[l].sites.length) {
+          throw new Error(`${l} class sum ${sum} != population ${RUN[l].sites.length}`);
+        }
+  PUB    sum 127    population 127    passes
+  DEF    sum 125    population 127    THROWS
+  GEN    sum 127    population 127    passes
+  BOTH   sum 125    population 127    THROWS
+  HIT      P10 his class-sum guard TRIPS under D* at both DEF and BOTH
+            DEF class sum 125 != population 127 | BOTH class sum 125 != population 127
+
+─── P11: does unit-531 state the premise its identity needs? ──────────────────
+      docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs:285  + '— an orphaning that is IDENTICAL at all four labels changes nothing');
+      docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs:321  say(`  class sum S_l         ${LABELS.map((l) => pad(sumOf(REAL.CLS, l), 8)).join('')}`);
+      docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs:335  say(`  class sum S_l         ${LABELS.map((l) => pad(sumOf(SYN.CLS, l), 8)).join('')}`);
+      docs/research/unit-531conserve-2026-11-27/RESULTS.md:22  sums to **0**. An orphaning that is identical at all four labels changes nothing. Partition failure
+      docs/research/unit-531conserve-2026-11-27/RESULTS.md:133  `INST[l].corpus.length` — **files** — and `:279-280` compares each label's class sum against **that
+  docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs: 3 matching line(s) of 372
+  docs/research/unit-531conserve-2026-11-27/RESULTS.md: 2 matching line(s) of 168
+  REFUTED  P11 the exhaustiveness premise goes UNSTATED in both of unit-531's files
+            5 matching line(s) across the two files
+
+─── P9: deferred to posthoc-orphan-interaction.mjs, by design ─────────────────
+  P9 needs a corpus this arm does not have. It is driven in the post-hoc on a corpus
+  served from memory, with git status --porcelain asserted there. Reported here so a
+  reader cannot mistake its absence for a pass.
+
+─── ledger ────────────────────────────────────────────────────────────────────
+  7 HIT / 4 REFUTED of 11 graded in the arm
+    HIT      P1  setTailIndices text identical PUB=DEF and GEN=BOTH under the REAL pair
+    HIT      P4  no dynamic path from D to setTailIndices
+    HIT      P2  tails sets identical PUB=DEF and GEN=BOTH, every file, REAL pair
+    HIT      P3  membership identical PUB=DEF and GEN=BOTH, REAL pair
+    HIT      P12(a) baseline off-by column reproduces unit-529 published (SET-BOUND +2, OTHER-BOUND -2, rest 0)
+    REFUTED  P5  D* pair: Sigma off-by over the ten != 0, at exactly additive membership
+    REFUTED  P6  D* pair: FAILS = 1, and the one class is UNRESOLVED
+    HIT      P7  magnitude equals p_D - p_B
+    REFUTED  P8  on the REAL pinned corpus, p_D != p_B  (registered expectation: EQUAL, i.e. REFUTED)
+    HIT      P10 his class-sum guard TRIPS under D* at both DEF and BOTH
+    REFUTED  P11 the exhaustiveness premise goes UNSTATED in both of unit-531's files
+
+  git status --porcelain outside this unit:
+      0 line(s)
+
+ARM DONE   2026-11-27 19:57:00 PST
