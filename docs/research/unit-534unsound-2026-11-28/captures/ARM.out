@@ -1,0 +1,68 @@
+unit-534unsound · arm · HEAD 788ab4bc5fe9 · clock 2026-11-28 10:54:49 PST
+population 7882 tracked files · SHA 5419ec77fad2 · corpus 871 files
+his instrument sliced: 5737 B from docs/research/unit-533exhaust-2026-11-28/arm-exhaust.mjs, sha 5ad083c341b1
+the body-acceptance test is present verbatim in the slice, exactly once: "if (occ(b.mask, 'cls =') > 0) continue;"
+
+§A  STATIC — his walker and his two readers, over my four instantiations
+  label  chain B   sha           TOTAL  assign  |L|  nonLit  orphans               extras
+  PUB    938       7afb92320891  yes    11      10   0       []                    []
+  N      979       65731818cdb8  yes    11      10   0       []                    []
+  R      945       0f37342a9b41  yes    11      10   0       [MAP-EXPR-SEEDED]     [MAP-EXPR]
+  W      938       7afb92320891  yes    11      10   0       []                    []
+
+  K-naive: PUB |L|=10 orph=[] nonLit=0 · N |L|=10 orph=[] nonLit=0 · R |L|=10 orph=[MAP-EXPR-SEEDED] nonLit=0 · W |L|=10 orph=[] nonLit=0
+
+§B  DRIVEN — the real corpus, same four instantiations
+  label  |M|    S      p      undef   excl   pre-flight
+  PUB    128    128    0      0       65     GREEN
+  N      128    125    3      3       65     GREEN
+  R      128    128    0      0       65     RED
+  W      80     80     0      0       31     GREEN
+
+  class                 PUB    N      R      W      
+  SET-BOUND             36     36     36     18     
+  SET-EXPR              0      0      0      0      
+  MAP-BOUND             11     11     11     6      
+  MAP-EXPR              0      0      0      0      
+  OTHER-BOUND           34     34     34     28     
+  UNRESOLVED            7      7      7      7      
+  PROPERTY              12     9      12     11     
+  CALL                  21     21     21     3      
+  RECEIVER-UNKEYED      7      7      7      7      
+  SET-TAIL-DIRECT       0      0      0      0      
+  <undefined>           0      3      0      0      
+
+§C  CRIPPLE TABLE — the uncrippled baseline is the FIRST ROW, by his 11-28 §4 lesson
+  GREEN  UNCRIPPLED baseline (PUB)                  bare else · 8 bodies
+  RED    K1 terminal bare else DELETED              no terminal bare else
+  RED    K2 PROPERTY body emptied (his C2)          body 5: body 5 assigns nothing
+  GREEN  K3 chain replaced by a non-chain           bare else · 8 bodies
+  RED    K4 cls renamed throughout the region       threw: anchor CHAIN.K4 cls renamed throughout the region.start occurs 0 times, not once: "  let cls;"
+  cripples red: 3/4 · baseline green: true
+
+§D  GRADING
+  HIT      P1   his isTotal reports total === true on cure N                              total=true (bare else · 8 bodies)
+  HIT      P2   N is not total: >=1 site returns cls === undefined                        undef sites = 3
+  HIT      P3   N is clean under BOTH his static readers; pre-flight GREEN                wide orph=[] |L|=10 extras=[] assign=11 nonLit=0 · naive orph=[]
+  HIT      P4   S_N < |M_N| with L ⊆ CLASSES: |M|=128, S=125, p=3                         |M|=128 S=125 p=3
+  HIT      P5   PROPERTY falls 12 -> 9 and no other class moves                           PROPERTY 12 -> 9 · others moved: none
+  HIT      P6   R: static RED, driven p_R = 0, tally identical to PUB on all ten          orph=[MAP-EXPR-SEEDED] extras=[MAP-EXPR] |L|=10 p=0 S=128 |M|=128 tally-identical=true
+  HIT      P7   W: chain byte-identical to PUB, TOTAL, S moves, p stays 0                 sha 7afb92320891 vs 7afb92320891 · S 128 -> 80 · p=0
+  HIT      P8   PUB control reproduces his row: |M|=128 S=128 p=0 TOTAL |L|=10 symdiff empty|M|=128 S=128 p=0 total=true |L|=10
+  REFUTED  P9   no instantiation or cripple in his unit exercises the unsound path        4 capture file(s), 12259 B · 'MAP-EXPR-SEEDED' x0 · verdict rows naming a conditional: 3
+  REFUTED  P10  cripple table: all four cripples RED and the baseline in the same table GREENcripples red 3/4 · baseline total=true
+  REFUTED  P11  drift: corpus 870 / sites 128 / excl 65, matching his 11-28 figures       corpus=871 sites=128 excl=65
+  HIT      P12  consequence: a pre-flight-green, walker-green cure moves S_l              P1 ∧ P3 ∧ P4 = true
+
+GRADED: 9 HIT / 3 REFUTED of 12
+
+§E  THE FINDING, STATED
+  His isTotal accepts a branch body on `occ(b.mask, 'cls =') > 0` — containment of a TOKEN,
+  at any depth, under any condition. His own cripple C2 reddens because it DELETES that token,
+  not because the body stopped always-assigning. So C2 grades the token, not the property, and
+  cure N — strictly weaker than C2, same branch — is TOTAL by his walker with p=3.
+  And in the other direction, three class literals are reached 0 times, so a rename out of the
+  ten orphans nothing: the static check is neither sufficient nor necessary. The exact carrier
+  is L_reached ⊆ CLASSES, and that one needs the corpus.
+
+§F  git status --porcelain outside this unit: 0 line(s)
