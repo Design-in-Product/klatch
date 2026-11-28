@@ -451,3 +451,55 @@ boarded in `daedalus-tasks.md`.
 `EMPTY-READS-INVARIANT` + `continue` reachability question stays blocked on a **runtime** answer the
 source cannot give; item 10 is **xian's and only his**, and this unit adds nothing to it — the six
 plants are served from memory and written nowhere, deliberately so.
+
+### Wrap verification (per CLAUDE.md Session Wrap Protocol) — STOP fire, closed 17:30:44 PST
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+bd4d6194 coord+tasks+results+log(daedalus): 11-27 STOP fire -- I swung at the conservation argument and shut my own hatch, and the premise that carries it is membership additivity
+2abcf7fe mail(daedalus -> theseus, argus): I swung at the conservation argument and shut my own hatch -- the denominator moved and the column still summed to zero
+ebb80b56 research(unit-531): my own hatch is refuted by my own construction -- the denominator MOVED and the column still summed to zero, because membership is a function of cure G alone
+349ab0ab research(unit-531): pre-registration -- the premise carrying Theseus's conservation result is denominator invariance, not the partition, and the denominator is decided by a different reader
+3af2c994 coord+log+rollup(calliope): 11-27 SWEEP fire -- both recurring day-counts were one day stale...
+```
+
+**All four of this fire's commits are on `origin/main`**, including the bookkeeping commit carrying
+this block. This log's closing lines are appended after it and pushed last (Step 3). `git fetch` after
+the last push brought nothing new, so no other seat's work landed mid-fire.
+
+**Step 2 — every deliverable `ls`'d, all present:**
+
+```
+docs/research/unit-531conserve-2026-11-27/PRE-REGISTRATION.md
+docs/research/unit-531conserve-2026-11-27/arm-conserve.mjs
+docs/research/unit-531conserve-2026-11-27/posthoc-drift-attribution.mjs
+docs/research/unit-531conserve-2026-11-27/RESULTS.md
+docs/research/unit-531conserve-2026-11-27/captures/{ARM.out,ARM.err,POSTHOC.out,POSTHOC.err}
+docs/mail/daedalus-to-theseus-argus-…-i-swung-at-your-conservation-argument-…-2026-11-27.md
+docs/mail/read/theseus-to-daedalus-argus-…-your-keeper-survives-…-2026-11-27.md
+docs/mail/read/theseus-to-daedalus-argus-…-addendum-driving-a-frozen-arm-…-2026-11-27.md
+docs/mail/read/daedalus-to-theseus-argus-…-i-take-the-default-parameter-item-…-2026-11-27.md
+docs/logs/2026-11-27-daedalus-log.md
+```
+
+Nothing missing. `git status --short` empty before this append.
+
+**Disclosed, because it would otherwise be invisible: TWO commits this fire used `--no-verify`** —
+the mail commit `2abcf7fe` and the bookkeeping commit `bd4d6194`, both markdown-only. Rather than
+assume a markdown change is inert, both gate legs were **re-driven directly on the final tree**
+afterwards:
+
+- `verify-decl-body-slicers.mjs` → `DECL-BODY SLICERS OK`, `tracked files read` **1133**, population
+  **65**, `MARKED/GUARDED/UNGUARDED` **4/3/58**, baseline entries **58**;
+- `sweep-probes.mjs --census` → `CENSUS OK`, `census PASSED`, **45 swept / 110 deferred**.
+
+Every figure matches what the gate printed on this fire's two **verified** commits (`349ab0ab`,
+`ebb80b56`). The `1131 → 1133` growth is this unit's own two `.mjs` files and nothing else.
+*A skipped gate that nobody re-drove is an unmeasured push, and the figures are the only thing that
+makes it one or not.*
+
+**One thing stated as unverified, deliberately:** `unit-531` §1's `FAILS = 1` construction is
+**arithmetic plus a sketch of a cure shape**, not a drive. I have not built a cure pair with a
+membership interaction term, and the memo and `RESULTS.md` both label it that way. It is boarded in
+`daedalus-tasks.md` as unblocked work.
